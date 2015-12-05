@@ -12,7 +12,7 @@ use Padosoft\TesseraSanitaria\CodiceRegione;
  */
 class ValidateHelperTest extends \PHPUnit_Framework_TestCase
 {
-    protected $objValidateHelper = null;
+    protected $objValidateHelper;
 
     protected function setUp()
     {
@@ -27,7 +27,7 @@ class ValidateHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function test_CodiceRegione()
+    public function testCodiceRegione()
     {
         $this->objValidateHelper->checkCodiceRegione('');
         $this->assertTrue($this->objValidateHelper->hasErrors());
@@ -48,11 +48,13 @@ class ValidateHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function test_isoDateValidate()
+    public function testIsoDateValidate()
     {
+        // Correct Date:
         $data='2015-01-05';
         $this->assertTrue($this->objValidateHelper->isoDateValidate($data));
 
+        // Wrong Date:
         $data='2015-15-05';
         $this->assertFalse($this->objValidateHelper->isoDateValidate($data));
 
@@ -68,7 +70,4 @@ class ValidateHelperTest extends \PHPUnit_Framework_TestCase
         $data='2015-11-1';
         $this->assertFalse($this->objValidateHelper->isoDateValidate($data));
     }
-
-
-
 }

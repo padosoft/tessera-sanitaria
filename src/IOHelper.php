@@ -106,10 +106,7 @@ class IOHelper
 	{
 		$filesystem = new Filesystem(new AdapterZip($destination));
 		$filesystem->put(basename($source), file_get_contents($source));
-        $zip = $filesystem->getAdapter();
-        if(is_a($zip, 'ZipArchiveAdapter')){
-            $zip->getArchive()->close();
-        }
+        self::makeZip($filesystem);
 	}
 
 	/**
@@ -121,9 +118,17 @@ class IOHelper
 	{
 		$filesystem = new Filesystem(new AdapterZip($destination));
 		$filesystem->put(basename($source), $str);
+        self::makeZip($filesystem);
+	}
+
+    /**
+     * @param Filesystem $filesystem
+     */
+    public static function makeZip(Filesystem $filesystem)
+    {
         $zip = $filesystem->getAdapter();
-        if(is_a($zip, 'ZipArchiveAdapter')){
+        if (is_a($zip, 'ZipArchiveAdapter')) {
             $zip->getArchive()->close();
         }
-	}
+    }
 }

@@ -6,6 +6,7 @@
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
+[![SensioLabsInsight][ico-sensiolab]][link-sensiolab]
 
 Il package permette la creazione di file XML delle prestazioni mediche per il servizio nazionale sanità secondo il formato XML della tessera sanitaria definito nel DM 31/07/2015.
 Per maggiori info si veda il Portale della Tessera Sanitaria: http://sistemats1.sanita.finanze.it/wps/portal/
@@ -221,12 +222,14 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/padosoft/tessera-sanitaria.svg?style=flat-square
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/padosoft/tessera-sanitaria.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/padosoft/tessera-sanitaria.svg?style=flat-square
+[ico-sensiolab]: https://insight.sensiolabs.com/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc/small.png
 
 [link-packagist]: https://packagist.org/packages/padosoft/tessera-sanitaria
 [link-travis]: https://travis-ci.org/padosoft/tessera-sanitaria
 [link-scrutinizer]: https://scrutinizer-ci.com/g/padosoft/tessera-sanitaria/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/padosoft/tessera-sanitaria
 [link-downloads]: https://packagist.org/packages/padosoft/tessera-sanitaria
+[link-sensiolab]: https://insight.sensiolabs.com/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc
 [link-author]: https://github.com/lopadova
 [link-contributors]: ../../contributors
 

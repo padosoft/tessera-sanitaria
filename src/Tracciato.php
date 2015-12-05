@@ -44,7 +44,7 @@ class Tracciato
 		{
 			return TRUE;
 		}
-		return (count($this->getArrErrors())<1);
+		return (!$this->hasErrors());
 	}
 
 	/**
@@ -237,7 +237,7 @@ class Tracciato
     private function encrypt($cfProprietario, $cfProprietarioName)
     {
         $cfencrypted = base64_encode($this->objCryptoHelper->rsaEncrypt($cfProprietario));
-        if (count($this->objCryptoHelper->getArrErrors()) > 1) {
+        if ($this->hasErrors()) {
             $this->addError("Errore di criptazione openssl sul $cfProprietarioName: " . $this->cfProprietario);
             $this->addArrErrors($this->objCryptoHelper->getArrErrors());
         }

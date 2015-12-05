@@ -29,7 +29,9 @@
         "league/flysystem-ziparchive": "^1.0.2",
         "monolog/monolog": "1.*",
         "luminous/luminous": "^0.7.0",
-        "twbs/bootstrap": "^3.3"
+        "twbs/bootstrap": "^3.3",
+        "phpmd/phpmd": "2.*",
+        "squizlabs/php_codesniffer": "2.*"
     },
     "autoload": {
         "psr-4": {
