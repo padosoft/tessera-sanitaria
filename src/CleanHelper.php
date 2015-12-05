@@ -26,3 +26,4 @@ class CleanHelper
 		return $value;
 	}
 }
+

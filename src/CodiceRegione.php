@@ -13,7 +13,7 @@ class CodiceRegione
 
 	const PIEMONTE = '010';
 	const VAL_D_AOSTA = '020';
-	const LOMBARDIA = '30';
+	const LOMBARDIA = '030';
 	const PROVINCIA_AUTONOMA_DI_BOLZANO = '041';
 	const PROVINCIA_AUTONOMA_DI_TRENTO = '042';
 	const VENETO = '050';
@@ -36,3 +36,4 @@ class CodiceRegione
 	const SASN_NAPOLI = '002';
 	const UFFICIO_RAPPORTI_INTERNAZIONALI_PER_GLI_ISCRITTI_AIRE = '003';
 }
+

@@ -67,7 +67,7 @@ class ValidateHelper
 	 *
 	 * @return bool
 	 */
-	private function IsoDateValidate($dateStr)
+	public function isoDateValidate($dateStr)
 	{
 		if (preg_match('/^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/', $dateStr) > 0){
 			return TRUE;
@@ -167,7 +167,7 @@ class ValidateHelper
      */
     private function checkDataValida($campo, $valore)
     {
-        if (!$this->IsoDateValidate($valore)) {
+        if (!$this->isoDateValidate($valore)) {
             $this->addError("<b>" . $valore . "</b> - $campo non valida. La data deve essere nel formato ISO Es.: 2015-08-01");
         }
 

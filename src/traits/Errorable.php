@@ -55,4 +55,16 @@ trait Errorable
 	{
 		$this->arrErrors = array();
 	}
+
+    /**
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        if(count($this->getArrErrors())>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
