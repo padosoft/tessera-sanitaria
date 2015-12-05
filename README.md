@@ -37,7 +37,6 @@ Per maggiori info si veda il Portale della Tessera Sanitaria: http://sistemats1.
   * [Credits](#credits)
   * [License](#license)
 
-
 # PREREQUISITI
 
 PHP 5.4+
