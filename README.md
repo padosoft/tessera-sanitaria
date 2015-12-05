@@ -1,5 +1,12 @@
 # PROGETTO TESSERA SANITARIA
 
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Software License][ico-license]](LICENSE.md)
+[![Build Status][ico-travis]][link-travis]
+[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
+[![Quality Score][ico-code-quality]][link-code-quality]
+[![Total Downloads][ico-downloads]][link-downloads]
+
 Il package permette la creazione di file XML delle prestazioni mediche per il servizio nazionale sanità secondo il formato XML della tessera sanitaria definito nel DM 31/07/2015.
 Per maggiori info si veda il Portale della Tessera Sanitaria: http://sistemats1.sanita.finanze.it/wps/portal/
 
