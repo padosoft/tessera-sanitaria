@@ -10,8 +10,11 @@
 Il package permette la creazione di file XML delle prestazioni mediche per il servizio nazionale sanità secondo il formato XML della tessera sanitaria definito nel DM 31/07/2015.
 Per maggiori info si veda il Portale della Tessera Sanitaria: http://sistemats1.sanita.finanze.it/wps/portal/
 
-# TOC
-* [PROGETTO TESSERA SANITARIA](#progetto-tessera-sanitaria)
+Table of Contents
+=================
+
+  * [PROGETTO TESSERA SANITARIA](#progetto-tessera-sanitaria)
+  * [TOC](#toc)
   * [PREREQUISITI](#prerequisiti)
     * [INSTALLAZIONE  OPENSSL](#installazione--openssl)
       * [Windows](#windows)
@@ -35,8 +38,9 @@ Per maggiori info si veda il Portale della Tessera Sanitaria: http://sistemats1.
   * [Contributing](#contributing)
   * [Security](#security)
   * [Credits](#credits)
+  * [About Padosoft](#about-padosoft)
   * [License](#license)
-
+  
 # PREREQUISITI
 
 PHP 5.4+
@@ -203,6 +207,9 @@ If you discover any security related issues, please email :author_email instead 
 - [Lorenzo Padovani](https://github.com/lopadova)
 - Raffaele Masi
 - [All contributors](https://github.com/thephpleague/skeleton/contributors)
+
+# About Padosoft
+Padosoft is a software house based in Florence, Italy. Specialized in E-commerce and web sites.
 
 # License
 
