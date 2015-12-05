@@ -221,3 +221,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/padosoft/tessera-sanitaria
 [link-author]: https://github.com/lopadova
 [link-contributors]: ../../contributors
+
