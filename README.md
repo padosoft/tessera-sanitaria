@@ -3,7 +3,33 @@
 Il package permette la creazione di file XML delle prestazioni mediche per il servizio nazionale sanità secondo il formato XML della tessera sanitaria definito nel DM 31/07/2015.
 Per maggiori info si veda il Portale della Tessera Sanitaria: http://sistemats1.sanita.finanze.it/wps/portal/
 
-[TOC]
+# TOC
+* [PROGETTO TESSERA SANITARIA](#progetto-tessera-sanitaria)
+  * [PREREQUISITI](#prerequisiti)
+    * [INSTALLAZIONE  OPENSSL](#installazione--openssl)
+      * [Windows](#windows)
+      * [Linux](#linux)
+    * [GENERAZIONE CERTIFICATO E CHIAVE PUBBLICA](#generazione-certificato-e-chiave-pubblica)
+      * [Windows](#windows-1)
+      * [Linux](#linux-1)
+      * [Comandi da eseguire](#comandi-da-eseguire)
+    * [CONFIGURAZIONE](#configurazione)
+      * [Enviroment](#enviroment)
+      * [Permission folder](#permission-folder)
+  * [CHANGE LOG](#change-log)
+  * [USO DELLA LIBRERIA](#uso-della-libreria)
+    * [ESEMPIO BASE](#esempio-base)
+    * [OUTPUT](#output)
+      * [Output a video](#output-a-video)
+      * [Creazione File](#creazione-file)
+    * [VALIDAZIONE](#validazione)
+  * [ESEMPIO COMPLETO](#esempio-completo)
+    * [Screenshot esempio](#screenshot-esempio)
+  * [Contributing](#contributing)
+  * [Security](#security)
+  * [Credits](#credits)
+  * [License](#license)
+
 
 # PREREQUISITI
 
