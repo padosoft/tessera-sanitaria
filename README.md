@@ -19,11 +19,11 @@ Scaricare l'eseguibile da https://slproweb.com/products/Win32OpenSSL.html , lanc
 OpenSSL é già installato di default in tutte le principali distribuzioni.
 Eventualmente, controllare la versione tramite il comando: 
 
-```
+``` bash
 openssl version
 ```
 se non aggiornata, lanciare i comandi:
-```
+``` bash
 apt-get update && apt-get upgrade
 
 apt-get install openssl
@@ -155,7 +155,7 @@ Tutti i precedenti esempi di codice sono stati ricavati da questo file.
 ## Screenshot esempio
 
 Uno screenshot di esempio si trova nella cartella resources/img
-![demo tessera-sanitaria](/resource/img/tessera_sanitaria_tests.png)
+![demo tessera-sanitaria](https://raw.githubusercontent.com/padosoft/tessera-sanitaria/master/resources/img/tessera_sanitaria_tests.png)
 
 # Contributing
 
@@ -169,6 +169,7 @@ If you discover any security related issues, please email :author_email instead 
 
 - [Lorenzo Padovani](https://github.com/lopadova)
 - Raffaele Masi
+- [All contributors](https://github.com/thephpleague/skeleton/contributors)
 
 # License
 
