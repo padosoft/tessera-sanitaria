@@ -14,7 +14,7 @@ Table of Contents
 =================
 
   * [PROGETTO TESSERA SANITARIA](#progetto-tessera-sanitaria)
-  * [TOC](#toc)
+  * [Table of Contents](#table-of-contents)
   * [PREREQUISITI](#prerequisiti)
     * [INSTALLAZIONE  OPENSSL](#installazione--openssl)
       * [Windows](#windows)
