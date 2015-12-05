@@ -1,0 +1,49 @@
+{
+    "name": "padosoft/tessera-sanitaria",
+    "description": "Export delle prestazioni mediche per il servizio nazionale sanità secondo il formato XML della tessera sanitaria DM 31/07/2015.",
+    "keywords" : [
+    	"padosoft",
+    	"tessera sanitaaria",
+    	"export",
+    	"xml",
+    	"servizio sanitario nazionale"
+    ],
+    "homepage":"https://bitbucket.org/padosoft/tessera-sanitaria/",
+    "license" : "MIT",
+    "authors" : [
+    	{
+    		"name" : "padosoft",
+    		"email" : "helpdesk@padosoft.com",
+    		"homepage" : "https://www.padosoft.com",
+    		"role" : "Developer"
+    	}
+    ],
+	"require": {
+		"usu/codice-fiscale": "1.0.*",
+		"fdisotto/partita-iva": "1.0.*",
+        "vlucas/phpdotenv": "^2.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "5.*",
+        "scrutinizer/ocular": "~1.1",
+        "league/flysystem-ziparchive": "^1.0.2",
+        "monolog/monolog": "1.*",
+        "luminous/luminous": "^0.7.0",
+        "twbs/bootstrap": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Padosoft\\TesseraSanitaria\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Padosoft\\TesseraSanitaria\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
