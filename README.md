@@ -110,6 +110,7 @@ Rendere queste directory scrivibili da php:
 ``` bash
 chmod -R 777 /var/www/html/padosoft/tessera-sanitaria/tests/tmp/
 chmod -R 777 /var/www/html/padosoft/tessera-sanitaria/tests/output/
+chmod -R 777 /var/www/html/padosoft/tessera-sanitaria/tests/log/
 chmod -R 777 /var/www/html/padosoft/tessera-sanitaria/vendor/luminous/luminous/cache/
 ```
 

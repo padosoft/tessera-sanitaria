@@ -9,6 +9,9 @@ class ValidateHelper
 {
 	use traits\Errorable;
 
+    private $objPartitaIVA = null;
+    private $objCFChecker = null;
+
 	/**+
 	 * ValidateHelper constructor.
 	 *
@@ -19,26 +22,36 @@ class ValidateHelper
 	{
 		$this->arrErrors = array();
 		$this->objPartitaIVA = $objPartitaIVA;
-		$this->objCFChecker = $objCFChecker;	
+		$this->objCFChecker = $objCFChecker;
 	}
+
+    /**
+     * @param       $codice
+     * @param       $codice_nome
+     * @param array $arrCodiciValidi
+     * @param       $codice_len
+     */
+    public function checkCodice($codice, $codice_nome, array $arrCodiciValidi, $codice_len)
+    {
+        if($codice==''){
+            $this->AddError("$codice_nome mancante");
+        }else{
+            if( is_int($codice_len) && ($codice_len>0) && strlen($codice) != $codice_len){
+                $this->AddError("<b>".$codice."</b> - Il $codice_nome deve essere lungo $codice_len caratteri");
+            }
+
+            if(!in_array($codice, $arrCodiciValidi)){
+                $this->AddError("<b>".$codice."</b> - $codice_nome non valido. Codici validi: ".implode(", ",$arrCodiciValidi));
+            }
+        }
+    }
 
 	/**
 	 * @param $codiceRegione
 	 */
 	public function checkCodiceRegione($codiceRegione)
 	{
-		if(empty($codiceRegione)){
-			$this->AddError("Codice regione (codiceRegione) mancante");
-		}else{
-			if(strlen($codiceRegione) != 3){
-				$this->AddError("<b>".$codiceRegione."</b> - Il codice regione (codiceRegione) deve essere lungo tre caratteri");
-			}
-
-			$arrCodiceRegione = CodiceRegione::getCostants();
-			if(!in_array($codiceRegione, $arrCodiceRegione)){
-				$this->AddError("<b>".$codiceRegione."</b> - Codice regione (codiceRegione) non valido. Codici validi: ".implode(", ",$arrCodiceRegione));
-			}
-		}
+        $this->checkCodice($codiceRegione, 'Codice regione (codiceRegione)', CodiceRegione::getCostants(), 3);
 	}
 
 	/**
@@ -46,13 +59,7 @@ class ValidateHelper
 	 */
 	public function checkCodiceSSA($codiceSSA)
 	{
-		if(empty($codiceSSA)){
-			$this->AddError("Codice SSA (codiceSSA) mancante");
-		}else{
-			if($codiceSSA != CodiceSSA::FARMACIA && $codiceSSA != CodiceSSA::STRUTTURA){
-				$this->AddError("<b>".$codiceSSA."</b> - Il codice SSA (codiceSSA) deve valere 5 (Farmacia) oppure 6 (Struttura)");
-			}
-		}
+        $this->checkCodice($codiceSSA, 'Codice SSA (codiceSSA)', CodiceSSA::getCostants(), 0);
 	}
 
 	/**
@@ -75,12 +82,12 @@ class ValidateHelper
 	public function checkArrVociSpesa($arrVociSpesa)
 	{
 	if(empty($arrVociSpesa)){
-			
+
 			$this->AddError("Voci spesa mancanti");
 		}else{
-						
+
 			$arrTipiSpesaPermessi = TipoSpesa::getCostants();
-			
+
 			foreach ($arrVociSpesa as $rigaVociSpesa){
 				foreach ($rigaVociSpesa as $colonnaVociSpesa){
 					foreach($colonnaVociSpesa as $campo=>$valore){
@@ -105,51 +112,39 @@ class ValidateHelper
 		if(empty($arrSpesa)){
 			$this->AddError("Dati spesa mancanti");
 		}else{
-			
+
 			$arrFlagOperazione = FlagOperazione::getCostants();
 
-			// Controllo interno array spesa 
-			foreach($arrSpesa as $rigaSpesa){		
-				
+			// Controllo interno array spesa
+			foreach($arrSpesa as $rigaSpesa){
+
 				if(count($rigaSpesa)<6){
 					$this->AddError("Dati spesa incompleti");
 				}
-				
+
 				foreach($rigaSpesa as $campo => $valore){
 
 					// generico per campo mancante obbligatorio
 					if($valore == "" && $campo != "flagPagamentoAnticipato"){ // flagPagamentoAnticipato e' facoltativo
 						$this->AddError("Dato spesa mancante campo: ".$campo);
 					}
-					
-					if($campo == "dataEmissione" && !$this->IsoDateValidate($valore)){
-						$this->AddError("<b>".$valore."</b> - Data di emissione (dataEmissione) non valida. La data deve essere nel formato ISO Es.: 2015-08-01");
-					}
-					
-					if($campo == "dataEmissione" && $valore < "2015-01-01"){
-						$this->AddError("<b>".$valore."</b> - La data di emissione (dataEmissione) deve essere successiva al 01/01/2015");
-					}
-					
-					if($campo == "dataPagamento" && !$this->IsoDateValidate($valore)){
-						$this->AddError("<b>".$valore."</b> - Data di pagamento (dataPagamento) non valida. La data deve essere nel formato ISO Es.: 2015-08-01");
-					}
 
-					if($campo == "dataPagamento" && $valore < "2015-01-01"){
-						$this->AddError("<b>".$valore."</b> - La data di pagamento (dataPagamento) deve essere successiva al 01/01/2015");
-					}
-					
-					if($campo == "flagOperazione" && (!in_array($valore, $arrFlagOperazione)) ){						
+                    if ($campo == "dataEmissione" || $campo == "dataPagamento") {
+                        $this->checkDataValida($campo, $valore);
+                    }
+
+					if($campo == "flagOperazione" && (!in_array($valore, $arrFlagOperazione)) ){
 						$this->AddError("<b>".$valore."</b> - Flag Operazione (flagOperazione) non valido. Codici validi: ".implode(", ",$arrFlagOperazione));
 					}
-					
+
 					if($campo == "cfCittadino" && !$this->objCFChecker->isFormallyCorrect($valore)){
 						$this->AddError("<b>".$valore."</b> - Codice fiscale (cfCittadino) cittadino non valido");
 					}
-					
+
 					if($campo == "dispositivo" && (!is_numeric($valore) || strlen($valore) > 3) ){
 						$this->AddError("<b>".$valore."</b> - Codice dispositivo (dispositivo) non valido: deve essere numerico, al massimo di 3 cifre");
 					}
-					
+
 					if($campo == "numDocumento" && (!is_numeric($valore) || strlen($valore) > 20) ){
 						$this->AddError("<b>".$valore."</b> - Numero documento (numDocumento) non valido: deve essere numerico, al massimo di 20 cifre");
 					}
@@ -166,7 +161,7 @@ class ValidateHelper
 		if(empty($pIva)){
 			$this->AddError("Partita IVA mancante");
 		}else{
-			// Verifica formale della partita IVA		
+			// Verifica formale della partita IVA
 			if(!$this->objPartitaIVA->check($pIva)){
 				$this->AddError("<b>".$pIva."</b> - Partita IVA formalmente non corretta");
 			}
@@ -181,7 +176,7 @@ class ValidateHelper
 		if(empty($cfProprietario)){
 			$this->AddError("Codice fiscale proprietario (cfProprietario) mancante");
 		}else{
-			// Verifica formale del codice fiscale		
+			// Verifica formale del codice fiscale
 			if (!$this->objCFChecker->isFormallyCorrect($cfProprietario)){
 				$this->AddError("<b>".$cfProprietario."</b> - Codice fiscale proprietario (cfProprietario) formalmente non corretto");
 			}
@@ -193,18 +188,22 @@ class ValidateHelper
 	 */
 	public function checkCodiceAsl($codiceAsl)
 	{
-		if(empty($codiceAsl)){
-			$this->AddError("Codice ASL (codiceAsl) mancante");
-		}
-		
-		if(strlen($codiceAsl) != 3){
-			$this->AddError("<b>".$codiceAsl."</b> - Il codice ASL (codiceAsl) deve essere lungo tre caratteri");
-		}
-		
-		$arrCodiceAsl = CodiceAsl::getCostants();
-		if(!in_array($codiceAsl, $arrCodiceAsl)){
-			$this->AddError("<b>".$codiceAsl."</b> - Il codice ASL (codiceAsl) non valido. Codici validi: ".implode(", ",$arrCodiceAsl));
-		}
+        $this->checkCodice($codiceAsl, 'Codice ASL (codiceAsl)', CodiceAsl::getCostants(), 3);
 	}
-	
+
+    /**
+     * @param $campo
+     * @param $valore
+     */
+    private function checkDataValida($campo, $valore)
+    {
+        if (!$this->IsoDateValidate($valore)) {
+            $this->AddError("<b>" . $valore . "</b> - $campo non valida. La data deve essere nel formato ISO Es.: 2015-08-01");
+        }
+
+        if ($valore < "2015-01-01") {
+            $this->AddError("<b>" . $valore . "</b> - $campo deve essere successiva al 01/01/2015");
+        }
+    }
+
 }

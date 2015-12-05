@@ -1,5 +1,4 @@
 <?php
-
 namespace Padosoft\TesseraSanitaria;
 
 /**
@@ -7,9 +6,9 @@ namespace Padosoft\TesseraSanitaria;
  * @package Padosoft\TesseraSanitaria
  */
 class Tracciato
-{	
+{
 	use traits\Errorable;
-	
+
 	private $strXML = "";
 	private $codiceRegione = "";
 	private $codiceAsl = "";
@@ -17,6 +16,7 @@ class Tracciato
 	private $cfProprietario = "";
 	private $pIva = "";
 	private $arrSpesa = array();
+	private $arrVociSpesa = array();
 	private $objValidateHelper = null;
 	private $objCleanHelper = null;
 	private $objCryptoHelper = null;
@@ -71,15 +71,15 @@ class Tracciato
 		$this->arrVociSpesa = $arrVociSpesa;
 
 		$this->validateParamTracciato();
-		if(!$this->getResult()){			
+		if(!$this->getResult()){
 			return FALSE;
 		}
-		
+
 		$this->strXML = $this->generateXML();
-		if(!$this->getResult()){			
+		if(!$this->getResult()){
 			return FALSE;
 		}
-		
+
 		return TRUE;
 	}
 
@@ -106,7 +106,7 @@ class Tracciato
 		$str="";
 		for($i=0;$i<$numTab;$i++){
 			$str.="    ";
-		}	
+		}
 		return $str;
 	}
 
@@ -114,7 +114,7 @@ class Tracciato
 	 *
 	 */
 	private function resetVarTracciato()
-	{		
+	{
 		$this->strXML = "";
 		$this->ResetErrors();
 		$this->objValidateHelper->ResetErrors();
@@ -133,7 +133,7 @@ class Tracciato
 	 *
 	 */
 	private function validateParamTracciato()
-	{			
+	{
 		$this->objValidateHelper->checkCodiceRegione($this->codiceRegione);
 		$this->objValidateHelper->checkCodiceAsl($this->codiceAsl);
 		$this->objValidateHelper->checkCodiceSSA($this->codiceSSA);
@@ -141,7 +141,7 @@ class Tracciato
 		$this->objValidateHelper->checkPIva($this->pIva);
 		$this->objValidateHelper->checkArrSpesa($this->arrSpesa);
 		$this->objValidateHelper->checkArrVociSpesa($this->arrVociSpesa);
-		
+
 		$this->AddArrErrors($this->objValidateHelper->GetArrErrors());
 	}
 
@@ -154,28 +154,28 @@ class Tracciato
 		$cfencrypted = base64_encode($this->objCryptoHelper->rsaEncrypt($this->cfProprietario));
 		if(count($this->objCryptoHelper->GetArrErrors())>1){
 			$this->AddError("Errore di criptazione openssl sul cfProprietario: ".$this->cfProprietario);
-			$this->AddArrErrors($this->objCryptoHelper->GetArrErrors());			
+			$this->AddArrErrors($this->objCryptoHelper->GetArrErrors());
 			return "";
 		}
-		
+
 		// Testata: dati proprietario (prima di <proprietario>, rimossi campi opzionali di esempio <opzionale1>text</opzionale1><opzionale2>text</opzionale2><opzionale3>text</opzionale3>)
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
 		$xml .= '<precompilata xsi:noNamespaceSchemaLocation="730_precompilata.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'.PHP_EOL;
-		
+
  		$xml .= $this->addTab(1).'<proprietario>'.PHP_EOL;
 		$xml .= $this->addTab(2).'<codiceRegione>'.$this->objCleanHelper->clean($this->codiceRegione).'</codiceRegione>'.PHP_EOL;
 		$xml .= $this->addTab(2).'<codiceAsl>'.$this->objCleanHelper->clean($this->codiceAsl).'</codiceAsl>'.PHP_EOL;
 		$xml .= $this->addTab(2).'<codiceSSA>'.$this->objCleanHelper->clean($this->codiceSSA).'</codiceSSA>'.PHP_EOL;
 		$xml .= $this->addTab(2).'<cfProprietario>'.$cfencrypted.'</cfProprietario>'.PHP_EOL;
 		$xml .= $this->addTab(1).'</proprietario>'.PHP_EOL;
-		
+
 		// Documento fiscale: dati identificativi della ricevuta/scontrino
 		foreach($this->arrSpesa as $key => $rigaSpesa)
 		{
 			$xml .= $this->addTab(1).'<documentoSpesa>'.PHP_EOL;
-			
+
 			$flagOperazione = $rigaSpesa['flagOperazione'];
-			
+
 			// Rimborso
 			if($flagOperazione == FlagOperazione::RIMBORSO)
 			{
@@ -188,15 +188,15 @@ class Tracciato
 				$xml .= $this->addTab(3).'</numDocumentoFiscale>'.PHP_EOL;
 				$xml .= $this->addTab(2).'</idRimborso>'.PHP_EOL;
 			}
-			
+
 			// Dati ricevuta/scontrino
 			$cfCittadinoEncrypted = base64_encode($this->objCryptoHelper->rsaEncrypt($rigaSpesa['cfCittadino']));
 			if(count($this->objCryptoHelper->GetArrErrors())>1){
 				$this->AddError("Errore di criptazione openssl durante encrypt cfCittadino: ".$rigaSpesa['cfCittadino']." - numDocumento: ".$rigaSpesa['numDocumento']);
-				$this->AddArrErrors($this->objCryptoHelper->GetArrErrors());			
+				$this->AddArrErrors($this->objCryptoHelper->GetArrErrors());
 			}
-		
-			
+
+
 			$xml .= $this->addTab(2).'<idSpesa>'.PHP_EOL;
 			$xml .= $this->addTab(3).'<pIva>'.$this->objCleanHelper->clean($this->pIva).'</pIva>'.PHP_EOL;
 			$xml .= $this->addTab(3).'<dataEmissione>'.$this->objCleanHelper->clean($rigaSpesa['dataEmissione']).'</dataEmissione>'.PHP_EOL;
@@ -205,12 +205,12 @@ class Tracciato
 			$xml .= $this->addTab(4).'<numDocumento>'.$this->objCleanHelper->clean($rigaSpesa['numDocumento']).'</numDocumento>'.PHP_EOL;
 			$xml .= $this->addTab(3).'</numDocumentoFiscale>'.PHP_EOL;
 			$xml .= $this->addTab(2).'</idSpesa>'.PHP_EOL;
-			
+
 			$xml .= $this->addTab(2).'<dataPagamento>'.$this->objCleanHelper->clean($rigaSpesa['dataPagamento']).'</dataPagamento>'.PHP_EOL;
 			$xml .= $this->addTab(2).'<flagPagamentoAnticipato>'.$this->objCleanHelper->clean($rigaSpesa['flagPagamentoAnticipato']).'</flagPagamentoAnticipato>'.PHP_EOL;
 			$xml .= $this->addTab(2).'<flagOperazione>'.$this->objCleanHelper->clean($rigaSpesa['flagOperazione']).'</flagOperazione>'.PHP_EOL;
 			$xml .= $this->addTab(2).'<cfCittadino>'.$cfCittadinoEncrypted.'</cfCittadino>'.PHP_EOL;
-			
+
 			// Singole voci della ricevuta/scontrino
 			foreach($this->arrVociSpesa as $rigaVociSpesa)
 			{
@@ -223,7 +223,7 @@ class Tracciato
 					$xml .= $this->addTab(2).'</voceSpesa>'.PHP_EOL;
 				}
 			}
-			
+
 			$xml .= $this->addTab(1).'</documentoSpesa>'.PHP_EOL;
 		}
 		$xml .= '</precompilata>'.PHP_EOL;
@@ -231,7 +231,7 @@ class Tracciato
 		if(!$this->getResult()){
 			$xml='';
 		}
-		
+
 		return $xml;
 	}
 }

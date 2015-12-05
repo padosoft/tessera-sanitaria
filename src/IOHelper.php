@@ -34,13 +34,13 @@ class IOHelper
 		}
 
 		$arr = array();
-		
+
 		if ($handle = opendir($dir))
 		{
 			while (false !== ($entry = readdir($handle)))
 			{
 				if($entry != "." && $entry != "..")
-				{					
+				{
 					$zipnome = str_replace(".xml",".zip",$entry);
 					$zip="";
 					if(file_exists($dir.$zipnome))
@@ -60,7 +60,7 @@ class IOHelper
 			$arr = array_reverse($arr);
 			foreach ($arr as $a)
 			{
-				echo $a;	
+				echo $a;
 			}
 		}
 	}
@@ -69,21 +69,19 @@ class IOHelper
 	 * @param string $dir
 	 */
 	public static function cleandir($dir = "output")
-	{ 
+	{
 		if(empty($dir)){
 			$dir = "output";
 		}
 
-		# $logger->addInfo("Deleting $dir ...");
 		$files = glob($dir."/*");
 		if(is_array($files))
 			{
 			foreach($files as $file)
-				{ 
+				{
 					if(is_file($file))
-					{					
+					{
 						unlink($file);
-						#$logger->addInfo("$file Deleted.");
 					}
 				}
 			}
@@ -95,8 +93,8 @@ class IOHelper
 	 * @param $basePath
 	 */
 	public static function outputFile($str, $pathOutput, $basePath)
-	{		
-		$filesystem = new Filesystem(new AdapterLocal($basePath));	
+	{
+		$filesystem = new Filesystem(new AdapterLocal($basePath));
 		$filesystem->put(basename($pathOutput), $str);
 	}
 
@@ -105,10 +103,13 @@ class IOHelper
 	 * @param $destination
 	 */
 	public static function zipFile($source, $destination)
-	{		
-		$filesystem = new Filesystem(new AdapterZip($destination));	
+	{
+		$filesystem = new Filesystem(new AdapterZip($destination));
 		$filesystem->put(basename($source), file_get_contents($source));
-		$filesystem->getAdapter()->getArchive()->close();	
+        $zip = $filesystem->getAdapter();
+        if(is_a($zip, 'ZipArchiveAdapter')){
+            $zip->getArchive()->close();
+        }
 	}
 
 	/**
@@ -117,9 +118,9 @@ class IOHelper
 	 * @param $str
 	 */
 	public static function zipFileOntheFly($source, $destination, $str)
-	{		
-		$filesystem = new Filesystem(new AdapterZip($destination));	
+	{
+		$filesystem = new Filesystem(new AdapterZip($destination));
 		$filesystem->put(basename($source), $str);
-		$filesystem->getAdapter()->getArchive()->close();	
+		$filesystem->getAdapter()->getArchive()->close();
 	}
 }

@@ -51,12 +51,12 @@ $strXML = $objTracciato->getXml();
 PrintHelper::printHtmlHeader();
 
 // Recupera l'esito e gli eventuali errori
-PrintHelper::printError($objTracciato, $logger, $objValidateHelper, $objCryptoHelper);
+PrintHelper::printError($objTracciato, $logger);
 
 if($rispostaTracciato == TRUE){
-	
+
 	echo '<div class="alert alert-success" role="alert"><strong>Well done!</strong><br />FILE XML CREATO CON SUCCESSO</div>';
-	
+
 	// Stampa l'XML formattato
 	PrintHelper::printXML($strXML);
 

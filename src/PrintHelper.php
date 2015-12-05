@@ -12,23 +12,15 @@ class PrintHelper
 	/**
 	 * @param $objTracciato
 	 * @param $logger
-	 * @param $objValidateHelper
-	 * @param $objCryptoHelper
 	 */
-	public static function printError($objTracciato, $logger, $objValidateHelper, $objCryptoHelper)
-	{	
-	
+	public static function printError($objTracciato, $logger)
+	{
+
 		if(!$objTracciato->getResult()){
 			echo '<div class="alert alert-danger" role="alert"><strong>ERRORE!</strong><br /><br />Elenco Errori:<br /><br />';
 			$arr_errors = $objTracciato->GetArrErrors();
 			foreach ($arr_errors as $error)
 			{
-				/*
-				echo "<pre>";
-				print_r($error);
-				echo "</pre>";
-				*/
-				
 				echo($error)."<br>";
 				$logger->addError(strip_tags($error));
 			}
@@ -69,7 +61,7 @@ class PrintHelper
 						<p>Questo &egrave; un semplice demo che mostra l\'utilizzo del Package Padosoft TesseraSanitaria.<br />
 							Il package permette la creazione di file XML delle prestazioni mediche per il servizio nazionale sanit&agrave;
 							secondo il formato XML della tessera sanitaria definito nel DM 31/07/2015.<br />
-							Per maggiori info si veda il <a href="http://sistemats1.sanita.finanze.it/wps/portal/" target="_blank">Portale della Tessera Sanitaria</a>        		
+							Per maggiori info si veda il <a href="http://sistemats1.sanita.finanze.it/wps/portal/" target="_blank">Portale della Tessera Sanitaria</a>
 						</p>
 					 </div>
 				';
@@ -85,7 +77,7 @@ class PrintHelper
 
 			   <div class="page-header"><h1>Credits:</h1></div>
 				github: <a target="_blank" href="https://github.com/Padosoft">Padosoft</a>
-				 - 
+				 -
 				website: <a target="_blank" href="https://www.padosoft.com">https://www.padosoft.com</a>
 				';
 		echo '<br /><br /><br />
@@ -102,7 +94,7 @@ class PrintHelper
 		echo '<br /><br />
 				<div class="page-header"><h1>Opzioni:</h1></div>
 				<a type="button" class="btn btn-lg btn-success" href="?do=0">Test Dati Corretti</a>&nbsp;&nbsp;
-				<a type="button" class="btn btn-lg btn-warning" href="?do=1">Test Dati Errati</a>&nbsp;&nbsp;			
+				<a type="button" class="btn btn-lg btn-warning" href="?do=1">Test Dati Errati</a>&nbsp;&nbsp;
 				<a type="button" class="btn btn-lg btn-danger" href="?do=2">Ripulisci Folder output</a>&nbsp;&nbsp;
 				';
 	}
