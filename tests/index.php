@@ -26,10 +26,10 @@ $logger->pushHandler(new StreamHandler(__DIR__ . "/log/tessera_sanitaria.log", L
 
 if(!empty($_GET['do']) && $_GET['do'] == 1){
 	// Carica dati di esempio errati
-	DataHelper::LoadDataErrori($codiceRegione, $codiceAsl, $codiceSSA, $cfProprietario, $pIva, $arrSpesa, $arrVociSpesa);
+	DataHelper::loadDataErrori($codiceRegione, $codiceAsl, $codiceSSA, $cfProprietario, $pIva, $arrSpesa, $arrVociSpesa);
 }else{
 	// Carica dati di esempio corretti
-	DataHelper::LoadData($codiceRegione, $codiceAsl, $codiceSSA, $cfProprietario, $pIva, $arrSpesa, $arrVociSpesa);
+	DataHelper::loadData($codiceRegione, $codiceAsl, $codiceSSA, $cfProprietario, $pIva, $arrSpesa, $arrVociSpesa);
 }
 
 // Istanzia la classe per il tracciato e relative validazioni

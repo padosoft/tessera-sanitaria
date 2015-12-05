@@ -17,11 +17,11 @@ class DataHelper
 	 * @param $arrSpesa
 	 * @param $arrVociSpesa
 	 */
-	public static function LoadData(&$codiceRegione, &$codiceAsl, &$codiceSSA, &$cfProprietario, &$pIva, &$arrSpesa, &$arrVociSpesa)
+	public static function loadData(&$codiceRegione, &$codiceAsl, &$codiceSSA, &$cfProprietario, &$pIva, &$arrSpesa, &$arrVociSpesa)
 	{
-		self::LoadDatiProprietario($codiceRegione, $codiceAsl, $codiceSSA, $cfProprietario, $pIva);
-		self::LoadDatiSpesa($arrSpesa);
-		self::LoadDatiVociSpesa($arrVociSpesa);
+		self::loadDatiProprietario($codiceRegione, $codiceAsl, $codiceSSA, $cfProprietario, $pIva);
+		self::loadDatiSpesa($arrSpesa);
+		self::loadDatiVociSpesa($arrVociSpesa);
 	}
 
 	/**
@@ -33,11 +33,11 @@ class DataHelper
 	 * @param $arrSpesa
 	 * @param $arrVociSpesa
 	 */
-	public static function LoadDataErrori(&$codiceRegione, &$codiceAsl, &$codiceSSA, &$cfProprietario, &$pIva, &$arrSpesa, &$arrVociSpesa)
+	public static function loadDataErrori(&$codiceRegione, &$codiceAsl, &$codiceSSA, &$cfProprietario, &$pIva, &$arrSpesa, &$arrVociSpesa)
 	{
-		self::LoadDatiProprietarioErrati($codiceRegione, $codiceAsl, $codiceSSA, $cfProprietario, $pIva);
-		self::LoadDatiSpesaErrati($arrSpesa);
-		self::LoadDatiVociSpesaErrori($arrVociSpesa);
+		self::loadDatiProprietarioErrati($codiceRegione, $codiceAsl, $codiceSSA, $cfProprietario, $pIva);
+		self::loadDatiSpesaErrati($arrSpesa);
+		self::loadDatiVociSpesaErrori($arrVociSpesa);
 	}
 
 	/**
@@ -47,7 +47,7 @@ class DataHelper
 	 * @param $cfProprietario
 	 * @param $pIva
 	 */
-	public static function LoadDatiProprietario(&$codiceRegione, &$codiceAsl, &$codiceSSA, &$cfProprietario, &$pIva)
+	public static function loadDatiProprietario(&$codiceRegione, &$codiceAsl, &$codiceSSA, &$cfProprietario, &$pIva)
 	{
 		/*
 		PARAMETRI PROPRIETARIO
@@ -67,8 +67,8 @@ class DataHelper
 		$codiceRegione = CodiceRegione::TOSCANA;
 		$codiceAsl = CodiceAsl::FIRENZE;
 		$codiceSSA = CodiceSSA::STRUTTURA;
-		$cfProprietario = "CPLDVD67S11D612V"; 
-		$pIva = "01234567890"; 
+		$cfProprietario = "CPLDVD67S11D612V";
+		$pIva = "01234567890";
 	}
 
 	/**
@@ -78,19 +78,19 @@ class DataHelper
 	 * @param $cfProprietario
 	 * @param $pIva
 	 */
-	public static function LoadDatiProprietarioErrati(&$codiceRegione, &$codiceAsl, &$codiceSSA, &$cfProprietario, &$pIva)
+	public static function loadDatiProprietarioErrati(&$codiceRegione, &$codiceAsl, &$codiceSSA, &$cfProprietario, &$pIva)
 	{
 		$codiceRegione = 565656;
 		$codiceAsl = "56565";
 		$codiceSSA = 66689;
-		$cfProprietario = "XYZZZZZL68H02D612R"; 
-		$pIva = "XXX0500712345"; 
+		$cfProprietario = "XYZZZZZL68H02D612R";
+		$pIva = "XXX0500712345";
 	}
 
 	/**
 	 * @param $arrSpesa
 	 */
-	public static function LoadDatiSpesa(&$arrSpesa)
+	public static function loadDatiSpesa(&$arrSpesa)
 	{
 		/*
 		PARAMETRI SCONTRINO/RICEVUTA ($arrSpesa)
@@ -102,7 +102,7 @@ class DataHelper
 		$dataPagamento: Data di pagamento afferente al documento fiscale emesso. Deve essere coincidente o maggiore rispetto alla data di emissione. Puo' essere minore rispetto alla data di emissione solo se il flag pagamento anticipato e' valorizzato a 1 (e comunque non minore di 2015-01-01)
 		$flagPagamentoAnticipato=0: Numerico di 1 carattere. Il campo deve essere valorizzato a "1" per indicare il pagamento della spesa sostenuta dal cittadino in data antecedente alla data di emissione del documento fiscale
 		$flagOperazione: Alfanumerico di 1 carattere. Indica il tipo di operazione da eseguire sul record. Valori ammessi: "I" = inserimento ovvero nuovo record; "V" = Variazione; "R" = Rimborso; "C" = Cancellazione
-		cfCittadino: Alfanumerico di 256 caratteri. Codice fiscale del cittadino rilevato dalla Tessera Sanitaria. DOVREBBE ESSERE CRITTOGRAFATO, MA NON E' INDICATO COME (forse dalla tessera sanitaria arriva gia' crittografato?) 
+		cfCittadino: Alfanumerico di 256 caratteri. Codice fiscale del cittadino rilevato dalla Tessera Sanitaria. DOVREBBE ESSERE CRITTOGRAFATO, MA NON E' INDICATO COME (forse dalla tessera sanitaria arriva gia' crittografato?)
 		*/
 
 		$arrSpesa[0] = array("dataEmissione" 	=> "2015-10-08"
@@ -133,9 +133,9 @@ class DataHelper
 	/**
 	 * @param $arrSpesa
 	 */
-	public static function LoadDatiSpesaErrati(&$arrSpesa)
+	public static function loadDatiSpesaErrati(&$arrSpesa)
 	{
-		$arrSpesa[0] = array("dataEmissione" 	=> "2015-10-08"						
+		$arrSpesa[0] = array("dataEmissione" 	=> "2015-10-08"
 							,"dataPagamento" 	=> "2015-10-08"
 							,"flagPagamentoAnticipato" => "0"
 							,"flagOperazione" 	=> FlagOperazione::INSERIMENTO
@@ -155,14 +155,14 @@ class DataHelper
 	/**
 	 * @param $arrVociSpesa
 	 */
-	public static function LoadDatiVociSpesa(&$arrVociSpesa)
+	public static function loadDatiVociSpesa(&$arrVociSpesa)
 	{
 		/* VOCI DELLO SCONTRINO/RICEVUTA ($arrVociSpesa)
 		Tutti obbligatori tranne $flagTipoSpesa
 
 		$tipoSpesa: Alfanumerico di 2 caratteri. Il Campo assume i seguenti valori: TK= Ticket (Quota fissa e/o Differenza con il prezzo di riferimento. Franchigia. Pronto Soccorso e accesso diretto); FC= Farmaco, anche omeopatico. Dispositivi medici CE; FV = Farmaco per uso veterinario; AD= Acquisto o affitto di dispositivo medico CE; AS= Spese sanitarie relative ad ECG, spirometria, Holter pressorio e cardiaco, test per glicemia, colesterolo e trigliceridi o misurazione della pressione sanguigna, prestazione previste dalla farmacia dei servizi e simili); SR= Spese prestazioni assistenza specialistica ambulatoriale esclusi interventi di chirurgia estetica. Visita medica generica e specialistica o prestazioni diagnostiche e strumentali. Prestazione chirurgica ad esclusione della chirurgia estetica. Ricoveri ospedalieri, al netto del comfort. Certificazione medica; CT= Cure Termali; PI= protesica e integrativa; IC= Intervento di chirurgia estetica ambulatoriale o ospedaliero; AA= Altre spese
 		$flagTipoSpesa=0: Numerico di 1 carattere. Il campo vale "1" con tipo TK (ticket di pronto soccorso), "2" con tipo SR (visita in intromoenia)
-		$importo: Float 5,2. Importo di ogni singola spesa sostenuta dal cittadino / rimborso riconosciuto al cittadino a fronte di una spesa sostenuta. Il campo deve assumere sempre valori positivi, anche in caso di rimborso 
+		$importo: Float 5,2. Importo di ogni singola spesa sostenuta dal cittadino / rimborso riconosciuto al cittadino a fronte di una spesa sostenuta. Il campo deve assumere sempre valori positivi, anche in caso di rimborso
 		*/
 
 		$arrVociSpesa[0][0] = array("tipoSpesa" => TipoSpesa::TICKET,"flagTipoSpesa" => "1","importo" => "11.40");
@@ -181,12 +181,12 @@ class DataHelper
 	/**
 	 * @param $arrVociSpesa
 	 */
-	public static function LoadDatiVociSpesaErrori(&$arrVociSpesa)
+	public static function loadDatiVociSpesaErrori(&$arrVociSpesa)
 	{
 		$arrVociSpesa[0][0] = array("tipoSpesa" => TipoSpesa::TICKET,"flagTipoSpesa" => "1","importo" => "xxxx");
 		$arrVociSpesa[1][0] = array("tipoSpesa" => TipoSpesa::FARMACO,"flagTipoSpesa" => "0","importo" => "sdfsfsdf");
 		$arrVociSpesa[2][0] = array("tipoSpesa" => TipoSpesa::FARMACO_VETERINARIO,"flagTipoSpesa" => "fdsf","importo" => "zzzzz");
 
-		$arrVociSpesa[0][1] = array("tipoSpesa" => TipoSpesa::DISPOSITIVO_MEDICO,"flagTipoSpesa" => "0","importo" => "asdsdsf");	
+		$arrVociSpesa[0][1] = array("tipoSpesa" => TipoSpesa::DISPOSITIVO_MEDICO,"flagTipoSpesa" => "0","importo" => "asdsdsf");
 	}
 }

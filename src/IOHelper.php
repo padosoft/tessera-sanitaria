@@ -121,6 +121,9 @@ class IOHelper
 	{
 		$filesystem = new Filesystem(new AdapterZip($destination));
 		$filesystem->put(basename($source), $str);
-		$filesystem->getAdapter()->getArchive()->close();
+        $zip = $filesystem->getAdapter();
+        if(is_a($zip, 'ZipArchiveAdapter')){
+            $zip->getArchive()->close();
+        }
 	}
 }

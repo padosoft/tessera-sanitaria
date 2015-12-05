@@ -1,5 +1,6 @@
 <?php
 namespace Padosoft\TesseraSanitaria;
+use Monolog\Logger;
 
 /**
  * Class PrintHelper
@@ -9,16 +10,16 @@ class PrintHelper
 {
 	use traits\Errorable;
 
-	/**
-	 * @param $objTracciato
-	 * @param $logger
-	 */
-	public static function printError($objTracciato, $logger)
+    /**
+     * @param Tracciato $objTracciato
+     * @param Logger    $logger
+     */
+    public static function printError(Tracciato $objTracciato, Logger $logger)
 	{
 
 		if(!$objTracciato->getResult()){
 			echo '<div class="alert alert-danger" role="alert"><strong>ERRORE!</strong><br /><br />Elenco Errori:<br /><br />';
-			$arr_errors = $objTracciato->GetArrErrors();
+			$arr_errors = $objTracciato->getArrErrors();
 			foreach ($arr_errors as $error)
 			{
 				echo($error)."<br>";
@@ -29,15 +30,19 @@ class PrintHelper
 		}
 	}
 
-	/**
-	 * @param $strXML
-	 *
-	 * @throws \Exception
-	 */
-	public static function printXML($strXML)
+    /**
+     * @param            $strXML
+     * @param bool|false $textarea
+     *
+     * @throws \Exception
+     */
+	public static function printXML($strXML, $textarea=false)
 	{
-		//echo 'XML Generato: <br /><textarea name="xml" cols=130 rows=25>'.$strXML.'</textarea><br /><br />';
-		echo '<div style="height:500px; overflow:auto">'.\luminous::highlight('xml', $strXML)."</div>";
+		if($textarea){
+            echo 'XML Generato: <br /><textarea name="xml" cols=130 rows=25>'.$strXML.'</textarea><br /><br />';
+        }else {
+            echo '<div style="height:500px; overflow:auto">' . \luminous::highlight('xml', $strXML) . "</div>";
+        }
 	}
 
 	/**

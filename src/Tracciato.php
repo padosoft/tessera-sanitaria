@@ -40,11 +40,11 @@ class Tracciato
 	 */
 	public function getResult()
 	{
-		if(!is_array($this->GetArrErrors()))
+		if(!is_array($this->getArrErrors()))
 		{
 			return TRUE;
 		}
-		return (count($this->GetArrErrors())<1);
+		return (count($this->getArrErrors())<1);
 	}
 
 	/**
@@ -116,9 +116,9 @@ class Tracciato
 	private function resetVarTracciato()
 	{
 		$this->strXML = "";
-		$this->ResetErrors();
-		$this->objValidateHelper->ResetErrors();
-		$this->objCryptoHelper->ResetErrors();
+		$this->resetErrors();
+		$this->objValidateHelper->resetErrors();
+		$this->objCryptoHelper->resetErrors();
 
 		$this->codiceRegione = "";
 		$this->codiceAsl = "";
@@ -142,7 +142,7 @@ class Tracciato
 		$this->objValidateHelper->checkArrSpesa($this->arrSpesa);
 		$this->objValidateHelper->checkArrVociSpesa($this->arrVociSpesa);
 
-		$this->AddArrErrors($this->objValidateHelper->GetArrErrors());
+		$this->addArrErrors($this->objValidateHelper->getArrErrors());
 	}
 
 	/**
@@ -151,12 +151,10 @@ class Tracciato
 	private function generateXML()
 	{
 		// Cifra e rende il risultato in base64 per essere mostrato nell'XML
-		$cfencrypted = base64_encode($this->objCryptoHelper->rsaEncrypt($this->cfProprietario));
-		if(count($this->objCryptoHelper->GetArrErrors())>1){
-			$this->AddError("Errore di criptazione openssl sul cfProprietario: ".$this->cfProprietario);
-			$this->AddArrErrors($this->objCryptoHelper->GetArrErrors());
-			return "";
-		}
+        $cfencrypted = $this->encrypt($this->cfProprietario, 'cfProprietario');
+        if($cfencrypted==''){
+            return '';
+        }
 
 		// Testata: dati proprietario (prima di <proprietario>, rimossi campi opzionali di esempio <opzionale1>text</opzionale1><opzionale2>text</opzionale2><opzionale3>text</opzionale3>)
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
@@ -190,12 +188,7 @@ class Tracciato
 			}
 
 			// Dati ricevuta/scontrino
-			$cfCittadinoEncrypted = base64_encode($this->objCryptoHelper->rsaEncrypt($rigaSpesa['cfCittadino']));
-			if(count($this->objCryptoHelper->GetArrErrors())>1){
-				$this->AddError("Errore di criptazione openssl durante encrypt cfCittadino: ".$rigaSpesa['cfCittadino']." - numDocumento: ".$rigaSpesa['numDocumento']);
-				$this->AddArrErrors($this->objCryptoHelper->GetArrErrors());
-			}
-
+			$cfCittadinoEncrypted = $this->encrypt($rigaSpesa['cfCittadino'], 'cfCittadino');
 
 			$xml .= $this->addTab(2).'<idSpesa>'.PHP_EOL;
 			$xml .= $this->addTab(3).'<pIva>'.$this->objCleanHelper->clean($this->pIva).'</pIva>'.PHP_EOL;
@@ -234,4 +227,20 @@ class Tracciato
 
 		return $xml;
 	}
+
+    /**
+     * @param $cfProprietario
+     * @param $cfProprietarioName
+     *
+     * @return string
+     */
+    private function encrypt($cfProprietario, $cfProprietarioName)
+    {
+        $cfencrypted = base64_encode($this->objCryptoHelper->rsaEncrypt($cfProprietario));
+        if (count($this->objCryptoHelper->getArrErrors()) > 1) {
+            $this->addError("Errore di criptazione openssl sul $cfProprietarioName: " . $this->cfProprietario);
+            $this->addArrErrors($this->objCryptoHelper->getArrErrors());
+        }
+        return $cfencrypted;
+    }
 }

@@ -11,28 +11,6 @@ class CodiceRegione
 {
 	use traits\Enumerable;
 
-	/*	const ABRUZZO = "001";
-	const BASILICATA = "002";
-	const BOLZANO = "003";
-	const CALABRIA = "004";
-	const CAMPANIA = "005";
-	const EMILIA_ROMAGNA = "006";
-	const FRIULI_VENEZIA_GIULIA = "007";
-	const LAZIO = "008";
-	const LIGURIA = "009";
-	const LOMBARDIA = "010";
-	const MARCHE = "011";
-	const MOLISE = "012";
-	const PIEMONTE = "013";
-	const PUGLIA = "014";
-	const SARDEGNA = "015";
-	const SICILIA = "016";
-	const TOSCANA = "017";
-	const TRENTO = "018";
-	const UMBRIA = "019";
-	const VALDAOSTA = "020";
-	const VENETO = "021";
-	*/
 	const PIEMONTE = '010';
 	const VAL_D_AOSTA = '020';
 	const LOMBARDIA = '30';

@@ -34,14 +34,14 @@ class ValidateHelper
     public function checkCodice($codice, $codice_nome, array $arrCodiciValidi, $codice_len)
     {
         if($codice==''){
-            $this->AddError("$codice_nome mancante");
+            $this->addError("$codice_nome mancante");
         }else{
             if( is_int($codice_len) && ($codice_len>0) && strlen($codice) != $codice_len){
-                $this->AddError("<b>".$codice."</b> - Il $codice_nome deve essere lungo $codice_len caratteri");
+                $this->addError("<b>".$codice."</b> - Il $codice_nome deve essere lungo $codice_len caratteri");
             }
 
             if(!in_array($codice, $arrCodiciValidi)){
-                $this->AddError("<b>".$codice."</b> - $codice_nome non valido. Codici validi: ".implode(", ",$arrCodiciValidi));
+                $this->addError("<b>".$codice."</b> - $codice_nome non valido. Codici validi: ".implode(", ",$arrCodiciValidi));
             }
         }
     }
@@ -83,7 +83,7 @@ class ValidateHelper
 	{
 	if(empty($arrVociSpesa)){
 
-			$this->AddError("Voci spesa mancanti");
+			$this->addError("Voci spesa mancanti");
 		}else{
 
 			$arrTipiSpesaPermessi = TipoSpesa::getCostants();
@@ -92,13 +92,9 @@ class ValidateHelper
 				foreach ($rigaVociSpesa as $colonnaVociSpesa){
 					foreach($colonnaVociSpesa as $campo=>$valore){
 
-						if($campo == "tipoSpesa" && !in_array($valore,$arrTipiSpesaPermessi)){
-								$this->AddError("<b>".$valore."</b> - Codice tipo spesa (tipoSpesa) non valido. Codici validi: ".implode(", ",$arrTipiSpesaPermessi));
-						}
-						if($campo == "importo" && !is_numeric($valore)){
-								$this->AddError("<b>".$valore."</b> - Importo (importo) non numerico");
-						}
-					}
+                        $this->checkTipoSpesa($campo, $valore, $arrTipiSpesaPermessi);
+                        $this->checkImporto($campo, $valore);
+                    }
 				}
 			}
 		}
@@ -110,7 +106,7 @@ class ValidateHelper
 	public function checkArrSpesa($arrSpesa)
 	{
 		if(empty($arrSpesa)){
-			$this->AddError("Dati spesa mancanti");
+			$this->addError("Dati spesa mancanti");
 		}else{
 
 			$arrFlagOperazione = FlagOperazione::getCostants();
@@ -119,36 +115,10 @@ class ValidateHelper
 			foreach($arrSpesa as $rigaSpesa){
 
 				if(count($rigaSpesa)<6){
-					$this->AddError("Dati spesa incompleti");
+					$this->addError("Dati spesa incompleti");
 				}
 
-				foreach($rigaSpesa as $campo => $valore){
-
-					// generico per campo mancante obbligatorio
-					if($valore == "" && $campo != "flagPagamentoAnticipato"){ // flagPagamentoAnticipato e' facoltativo
-						$this->AddError("Dato spesa mancante campo: ".$campo);
-					}
-
-                    if ($campo == "dataEmissione" || $campo == "dataPagamento") {
-                        $this->checkDataValida($campo, $valore);
-                    }
-
-					if($campo == "flagOperazione" && (!in_array($valore, $arrFlagOperazione)) ){
-						$this->AddError("<b>".$valore."</b> - Flag Operazione (flagOperazione) non valido. Codici validi: ".implode(", ",$arrFlagOperazione));
-					}
-
-					if($campo == "cfCittadino" && !$this->objCFChecker->isFormallyCorrect($valore)){
-						$this->AddError("<b>".$valore."</b> - Codice fiscale (cfCittadino) cittadino non valido");
-					}
-
-					if($campo == "dispositivo" && (!is_numeric($valore) || strlen($valore) > 3) ){
-						$this->AddError("<b>".$valore."</b> - Codice dispositivo (dispositivo) non valido: deve essere numerico, al massimo di 3 cifre");
-					}
-
-					if($campo == "numDocumento" && (!is_numeric($valore) || strlen($valore) > 20) ){
-						$this->AddError("<b>".$valore."</b> - Numero documento (numDocumento) non valido: deve essere numerico, al massimo di 20 cifre");
-					}
-				}
+                $this->checkRigaSPesa($rigaSpesa, $arrFlagOperazione);
 			}
 		}
 	}
@@ -159,11 +129,11 @@ class ValidateHelper
 	public function checkPIva($pIva)
 	{
 		if(empty($pIva)){
-			$this->AddError("Partita IVA mancante");
+			$this->addError("Partita IVA mancante");
 		}else{
 			// Verifica formale della partita IVA
 			if(!$this->objPartitaIVA->check($pIva)){
-				$this->AddError("<b>".$pIva."</b> - Partita IVA formalmente non corretta");
+				$this->addError("<b>".$pIva."</b> - Partita IVA formalmente non corretta");
 			}
 		}
 	}
@@ -174,11 +144,11 @@ class ValidateHelper
 	public function checkCfProprietario($cfProprietario)
 	{
 		if(empty($cfProprietario)){
-			$this->AddError("Codice fiscale proprietario (cfProprietario) mancante");
+			$this->addError("Codice fiscale proprietario (cfProprietario) mancante");
 		}else{
 			// Verifica formale del codice fiscale
 			if (!$this->objCFChecker->isFormallyCorrect($cfProprietario)){
-				$this->AddError("<b>".$cfProprietario."</b> - Codice fiscale proprietario (cfProprietario) formalmente non corretto");
+				$this->addError("<b>".$cfProprietario."</b> - Codice fiscale proprietario (cfProprietario) formalmente non corretto");
 			}
 		}
 	}
@@ -198,11 +168,123 @@ class ValidateHelper
     private function checkDataValida($campo, $valore)
     {
         if (!$this->IsoDateValidate($valore)) {
-            $this->AddError("<b>" . $valore . "</b> - $campo non valida. La data deve essere nel formato ISO Es.: 2015-08-01");
+            $this->addError("<b>" . $valore . "</b> - $campo non valida. La data deve essere nel formato ISO Es.: 2015-08-01");
         }
 
         if ($valore < "2015-01-01") {
-            $this->AddError("<b>" . $valore . "</b> - $campo deve essere successiva al 01/01/2015");
+            $this->addError("<b>" . $valore . "</b> - $campo deve essere successiva al 01/01/2015");
+        }
+    }
+
+    /**
+     * @param $campo
+     * @param $valore
+     * @param $arrTipiSpesaPermessi
+     */
+    private function checkTipoSpesa($campo, $valore, $arrTipiSpesaPermessi)
+    {
+        if ($campo == "tipoSpesa" && !in_array($valore, $arrTipiSpesaPermessi)) {
+            $this->addError("<b>" . $valore . "</b> - Codice tipo spesa (tipoSpesa) non valido. Codici validi: " . implode(", ", $arrTipiSpesaPermessi));
+        }
+    }
+
+    /**
+     * @param $campo
+     * @param $valore
+     */
+    private function checkImporto($campo, $valore)
+    {
+        if ($campo == "importo" && !is_numeric($valore)) {
+            $this->addError("<b>" . $valore . "</b> - Importo (importo) non numerico");
+        }
+    }
+
+    /**
+     * @param $valore
+     * @param $campo
+     */
+    private function checkRequiredField($valore, $campo)
+    {
+        if ($valore == "" && $campo != "flagPagamentoAnticipato") { // flagPagamentoAnticipato e' facoltativo
+            $this->addError("Dato spesa mancante campo: " . $campo);
+        }
+    }
+
+    /**
+     * @param $campo
+     * @param $valore
+     */
+    private function checkDataEmissione($campo, $valore)
+    {
+        if ($campo == "dataEmissione" || $campo == "dataPagamento") {
+            $this->checkDataValida($campo, $valore);
+        }
+    }
+
+    /**
+     * @param $campo
+     * @param $valore
+     * @param $arrFlagOperazione
+     */
+    private function checkFlagOperazione($campo, $valore, $arrFlagOperazione)
+    {
+        if ($campo == "flagOperazione" && (!in_array($valore, $arrFlagOperazione))) {
+            $this->addError("<b>" . $valore . "</b> - Flag Operazione (flagOperazione) non valido. Codici validi: " . implode(", ", $arrFlagOperazione));
+        }
+    }
+
+    /**
+     * @param $campo
+     * @param $valore
+     */
+    private function checkCfCittadino($campo, $valore)
+    {
+        if ($campo == "cfCittadino" && !$this->objCFChecker->isFormallyCorrect($valore)) {
+            $this->addError("<b>" . $valore . "</b> - Codice fiscale (cfCittadino) cittadino non valido");
+        }
+    }
+
+    /**
+     * @param $campo
+     * @param $valore
+     */
+    private function checkDispositivo($campo, $valore)
+    {
+        if ($campo == "dispositivo" && (!is_numeric($valore) || strlen($valore) > 3)) {
+            $this->addError("<b>" . $valore . "</b> - Codice dispositivo (dispositivo) non valido: deve essere numerico, al massimo di 3 cifre");
+        }
+    }
+
+    /**
+     * @param $campo
+     * @param $valore
+     */
+    private function checkNumDocumento($campo, $valore)
+    {
+        if ($campo == "numDocumento" && (!is_numeric($valore) || strlen($valore) > 20)) {
+            $this->addError("<b>" . $valore . "</b> - Numero documento (numDocumento) non valido: deve essere numerico, al massimo di 20 cifre");
+        }
+    }
+
+    /**
+     * @param $rigaSpesa
+     * @param $arrFlagOperazione
+     */
+    private function checkRigaSPesa($rigaSpesa, $arrFlagOperazione)
+    {
+        foreach($rigaSpesa as $campo => $valore) {
+
+            $this->checkRequiredField($valore, $campo);
+
+            $this->checkDataEmissione($campo, $valore);
+
+            $this->checkFlagOperazione($campo, $valore, $arrFlagOperazione);
+
+            $this->checkCfCittadino($campo, $valore);
+
+            $this->checkDispositivo($campo, $valore);
+
+            $this->checkNumDocumento($campo, $valore);
         }
     }
 

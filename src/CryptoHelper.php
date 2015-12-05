@@ -8,7 +8,7 @@ namespace Padosoft\TesseraSanitaria;
 class CryptoHelper
 {
 	use traits\Errorable;
-	
+
 	protected $cert_file="";
 	protected $tmp_path="";
 	protected $openssl_exe_path="";
@@ -36,63 +36,30 @@ class CryptoHelper
 	 */
 	public function rsaEncrypt($str)
 	{
-		if(!file_exists($this->tmp_path)){
-			$this->AddError('Il percorso della path temporanea non &egrave; valido: '.$this->tmp_path);
-			return '';
-		}
-		if(!file_exists($this->cert_file)){
-			$this->AddError('Il percorso del file del certificato non &egrave; valido: '.$this->cert_file);
-			return '';
-		}
-		if($this->openssl_exe_path!='' && !file_exists($this->openssl_exe_path)){
-			$this->AddError('Il percorso di OpenSSL non &egrave; valido: '.$this->openssl_exe_path);
-			return '';
-		}
+        if(!$this->checkPath()){
+            return '';
+        }
 		// Path e nomi dei file temporanei
-		$rand_name = md5(time().rand(1,99999));
+		$rand_name = $this->getRandName();
 		$file_source = $this->tmp_path.$rand_name.".txt";
 		$file_dest = $this->tmp_path.$rand_name.".enc";
-		
+
 		// Scrive file temporaneo sorgente
 		file_put_contents($file_source, $str);
-		
-		// Definisce istruzione openssl
-		$exec = $this->openssl_exe_path."openssl rsautl -encrypt -in ".$file_source." -out ".$file_dest." -inkey ".$this->cert_file." -certin -pkcs";
+
+		// creo il comando openssl
+		$exec = $this->getCommand($file_source, $file_dest);
 
 		// Esegue istruzione openssl, creando file temporaneo con testo criptato
-		$this->output = "";
-		exec($exec." 2>&1", $this->output, $this->returned_val);
-		
-		if($this->returned_val == 1) // errore
-		{
-			$a = $this->output;
-			$this->AddError($a[0]);
-		}
+        $this->excecuteCommand($exec);
 
 		// Ricava il testo criptato dal file appena creato
-		$encrypted_txt = "";
-		if(file_exists($file_dest))
-		{
-			$encrypted_txt = file_get_contents($file_dest);
+        $encrypted_txt = $this->getEncryptedString($file_dest);
 
-			// Cancella i file di appoggio
-			unlink($file_dest);
-		}
-		else
-		{
-			$this->AddError("Criptazione fallita (file destinazione)");
-		}
-		
-		if(file_exists($file_source))
-		{
-			unlink($file_source);
-		}
-		else
-		{
-			$this->AddError("Criptazione fallita (file sorgente)");
-		}
+        //clean
+        $this->deleteSourceFile($file_source);
 
-		return $encrypted_txt;
+        return $encrypted_txt;
 	}
 
 	/**
@@ -106,4 +73,91 @@ class CryptoHelper
 		}
 		return $result;
 	}
+
+    /**
+     * @return bool
+     */
+    private function checkPath()
+    {
+        if (!file_exists($this->tmp_path)) {
+            $this->addError('Il percorso della path temporanea non &egrave; valido: ' . $this->tmp_path);
+            return false;
+        }
+        if (!file_exists($this->cert_file)) {
+            $this->addError('Il percorso del file del certificato non &egrave; valido: ' . $this->cert_file);
+            return false;
+        }
+        if ($this->openssl_exe_path != '' && !file_exists($this->openssl_exe_path)) {
+            $this->addError('Il percorso di OpenSSL non &egrave; valido: ' . $this->openssl_exe_path);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $file_source
+     * @param $file_dest
+     *
+     * @return string
+     */
+    private function getCommand($file_source, $file_dest)
+    {
+        return $this->openssl_exe_path . "openssl rsautl -encrypt -in " . $file_source . " -out " . $file_dest . " -inkey " . $this->cert_file . " -certin -pkcs";
+    }
+
+    /**
+     * @param $exec
+     */
+    private function excecuteCommand($exec)
+    {
+        $this->output = "";
+        exec($exec . " 2>&1", $this->output, $this->returned_val);
+
+        if ($this->returned_val == 1) // errore
+        {
+            $a = $this->output;
+            $this->addError($a[0]);
+        }
+    }
+
+    /**
+     * @param $file_dest
+     *
+     * @return string
+     */
+    private function getEncryptedString($file_dest)
+    {
+        $encrypted_txt = "";
+        if (file_exists($file_dest)) {
+            $encrypted_txt = file_get_contents($file_dest);
+
+            // Cancella i file di appoggio
+            unlink($file_dest);
+        } else {
+            $this->addError("Criptazione fallita (file destinazione non esistente)");
+        }
+
+        return $encrypted_txt;
+    }
+
+    /**
+     * @param $file_source
+     */
+    private function deleteSourceFile($file_source)
+    {
+        if (file_exists($file_source)) {
+            unlink($file_source);
+        } else {
+            $this->addError("Criptazione fallita (file sorgente non esistente)");
+        }
+    }
+
+    /**
+     * @return string
+     */
+    private function getRandName()
+    {
+        return md5(time() . mt_rand(1, 99999));
+    }
 }

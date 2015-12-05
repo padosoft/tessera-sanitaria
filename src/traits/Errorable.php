@@ -16,7 +16,7 @@ trait Errorable
 	/**
 	 * @return array
 	 */
-	public function GetArrErrors()
+	public function getArrErrors()
 	{
 		if(!is_array($this->arrErrors)){
 			$this->arrErrors = array();
@@ -27,7 +27,7 @@ trait Errorable
 	/**
 	 * @param $str
 	 */
-	public function AddError($str)
+	public function addError($str)
 	{
 		if($str == ""){
 			return;
@@ -38,20 +38,20 @@ trait Errorable
 	/**
 	 * @param $add
 	 */
-	public function AddArrErrors($add)
+	public function addArrErrors($add)
 	{
 		if(!is_array($add) || count($add)<1){
 			return;
 		}
-		
+
 		$this->arrErrors = array_merge($this->arrErrors, $add);
-		
+
 	}
 
 	/**
 	 *
 	 */
-	public function ResetErrors()
+	public function resetErrors()
 	{
 		$this->arrErrors = array();
 	}
