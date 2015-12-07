@@ -25,33 +25,14 @@ class ValidateHelper
 		$this->objCFChecker = $objCFChecker;
 	}
 
-    /**
-     * @param       $codice
-     * @param       $codice_nome
-     * @param array $arrCodiciValidi
-     * @param       $codice_len
-     */
-    public function checkCodice($codice, $codice_nome, array $arrCodiciValidi, $codice_len)
-    {
-        if($codice==''){
-            $this->addError("$codice_nome mancante");
-        }else{
-            if( is_int($codice_len) && ($codice_len>0) && strlen($codice) != $codice_len){
-                $this->addError("<b>".$codice."</b> - Il $codice_nome deve essere lungo $codice_len caratteri");
-            }
-
-            if(!in_array($codice, $arrCodiciValidi, null)){
-                $this->addError("<b>".$codice."</b> - $codice_nome non valido. Codici validi: ".implode(", ",$arrCodiciValidi));
-            }
-        }
-    }
-
 	/**
 	 * @param $codiceRegione
 	 */
 	public function checkCodiceRegione($codiceRegione)
 	{
-        $this->checkCodice($codiceRegione, 'Codice regione (codiceRegione)', CodiceRegione::getCostants(), 3);
+        if (!CodiceRegione::isValidValue($codiceRegione)) {
+            $this->addError("<b>".$codiceRegione."</b> - Codice regione (codiceRegione) non valido. Codici validi: ".CodiceRegione::getCostantsValues());
+        }
 	}
 
 	/**
@@ -59,7 +40,9 @@ class ValidateHelper
 	 */
 	public function checkCodiceSSA($codiceSSA)
 	{
-        $this->checkCodice($codiceSSA, 'Codice SSA (codiceSSA)', CodiceSSA::getCostants(), 0);
+        if (!CodiceSSA::isValidValue($codiceSSA)) {
+            $this->addError("<b>".$codiceSSA."</b> - Codice SSA (codiceSSA) non valido. Codici validi: ".CodiceSSA::getCostantsValues());
+        }
 	}
 
 	/**
@@ -81,12 +64,10 @@ class ValidateHelper
 	 */
 	public function checkArrVociSpesa($arrVociSpesa)
 	{
-	if(empty($arrVociSpesa)){
+	    if(empty($arrVociSpesa)){
 
 			$this->addError("Voci spesa mancanti");
 		}else{
-
-			$arrTipiSpesaPermessi = TipoSpesa::getCostants();
 
 			foreach ($arrVociSpesa as $rigaVociSpesa){
 				foreach ($rigaVociSpesa as $colonnaVociSpesa){
@@ -94,7 +75,7 @@ class ValidateHelper
 
                         if ($campo == "tipoSpesa"){
 
-                            $this->checkTipoSpesa($valore, $arrTipiSpesaPermessi);
+                            $this->checkTipoSpesa($valore);
                         }elseif ($campo == "importo") {
 
                             $this->checkImporto($valore);
@@ -114,16 +95,10 @@ class ValidateHelper
 			$this->addError("Dati spesa mancanti");
 		}else{
 
-			$arrFlagOperazione = FlagOperazione::getCostants();
-
 			// Controllo interno array spesa
 			foreach($arrSpesa as $rigaSpesa){
 
-				if(count($rigaSpesa)<6){
-					$this->addError("Dati spesa incompleti");
-				}
-
-                $this->checkRigaSPesa($rigaSpesa, $arrFlagOperazione);
+                $this->checkRigaSpesa($rigaSpesa);
 			}
 		}
 	}
@@ -163,7 +138,9 @@ class ValidateHelper
 	 */
 	public function checkCodiceAsl($codiceAsl)
 	{
-        $this->checkCodice($codiceAsl, 'Codice ASL (codiceAsl)', CodiceAsl::getCostants(), 3);
+        if (!CodiceAsl::isValidValue($codiceAsl)) {
+            $this->addError("<b>".$codiceAsl."</b> - Codice ASL (codiceAsl) non valido. Codici validi: ".CodiceAsl::getCostantsValues());
+        }
 	}
 
     /**
@@ -183,12 +160,11 @@ class ValidateHelper
 
     /**
      * @param $valore
-     * @param $arrTipiSpesaPermessi
      */
-    private function checkTipoSpesa($valore, $arrTipiSpesaPermessi)
+    private function checkTipoSpesa($valore)
     {
-        if (!in_array($valore, $arrTipiSpesaPermessi, null)) {
-            $this->addError("<b>" . $valore . "</b> - Codice tipo spesa (tipoSpesa) non valido. Codici validi: " . implode(", ", $arrTipiSpesaPermessi));
+        if (!TipoSpesa::isValidValue($valore)) {
+            $this->addError("<b>" . $valore . "</b> - Codice tipo spesa (tipoSpesa) non valido. Codici validi: " . TipoSpesa::getCostantsValues());
         }
     }
 
@@ -224,12 +200,11 @@ class ValidateHelper
 
     /**
      * @param $valore
-     * @param $arrFlagOperazione
      */
-    private function checkFlagOperazione($valore, $arrFlagOperazione)
+    private function checkFlagOperazione($valore)
     {
-        if (!in_array($valore, $arrFlagOperazione, null)) {
-            $this->addError("<b>" . $valore . "</b> - Flag Operazione (flagOperazione) non valido. Codici validi: " . implode(", ", $arrFlagOperazione));
+        if (!FlagOperazione::isValidValue($valore)) {
+            $this->addError("<b>" . $valore . "</b> - Flag Operazione (flagOperazione) non valido. Codici validi: " . FlagOperazione::getCostantsValues());
         }
     }
 
@@ -265,10 +240,13 @@ class ValidateHelper
 
     /**
      * @param $rigaSpesa
-     * @param $arrFlagOperazione
      */
-    private function checkRigaSPesa($rigaSpesa, $arrFlagOperazione)
+    private function checkRigaSpesa($rigaSpesa)
     {
+        if(count($rigaSpesa)<6){
+            $this->addError("Dati spesa incompleti");
+        }
+
         foreach($rigaSpesa as $campo => $valore) {
 
             $this->checkRequiredField($valore, $campo);
@@ -278,7 +256,7 @@ class ValidateHelper
                 $this->checkDataEmissione($campo, $valore);
             }elseif ($campo == "flagOperazione") {
 
-                $this->checkFlagOperazione($valore, $arrFlagOperazione);
+                $this->checkFlagOperazione($valore);
             }elseif ($campo == "cfCittadino") {
 
                 $this->checkCfCittadino($valore);
@@ -291,5 +269,4 @@ class ValidateHelper
             }
         }
     }
-
 }
