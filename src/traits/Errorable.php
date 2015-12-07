@@ -18,10 +18,7 @@ trait Errorable
 	 */
 	public function getArrErrors()
 	{
-		if(!is_array($this->arrErrors)){
-			$this->arrErrors = array();
-		}
-		return $this->arrErrors;
+        return (is_array($this->arrErrors) ? $this->arrErrors : array());
 	}
 
 	/**

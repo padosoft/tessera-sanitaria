@@ -239,41 +239,6 @@ class ValidateHelper
     }
 
     /**
-     * @param $rigaSpesa
-     */
-    private function checkRigaSpesa($rigaSpesa)
-    {
-        if(count($rigaSpesa)<6){
-            $this->addError("Dati spesa incompleti");
-        }
-
-        foreach($rigaSpesa as $campo => $valore) {
-
-            if ($campo != "flagPagamentoAnticipato") { // flagPagamentoAnticipato e' facoltativo
-
-                $this->checkRequiredField($valore, $campo);
-            }
-
-            if ($campo == "dataEmissione" || $campo == "dataPagamento") {
-
-                $this->checkDataEmissione($campo, $valore);
-            }elseif ($campo == "flagOperazione") {
-
-                $this->checkFlagOperazione($valore);
-            }elseif ($campo == "cfCittadino") {
-
-                $this->checkCfCittadino($valore);
-            }elseif ($campo == "dispositivo") {
-
-                $this->checkDispositivo($valore);
-            }elseif ($campo == "numDocumento") {
-
-                $this->checkNumDocumento($valore);
-            }
-        }
-    }
-
-    /**
      * @param            $valore
      * @param int        $maxLen
      * @param bool|false $zeroFilled
@@ -296,6 +261,58 @@ class ValidateHelper
             return !( $valore>=$maxNumber );
         }else{
             return true;
+        }
+    }
+
+    /**
+     * @param $rigaSpesa
+     */
+    private function checkRigaSpesa($rigaSpesa)
+    {
+        if(count($rigaSpesa)<6){
+            $this->addError("Dati spesa incompleti");
+        }
+
+        foreach($rigaSpesa as $campo => $valore) {
+
+            $this->checkDatiSpesa($campo, $valore);
+        }
+    }
+    
+    /**
+     * @param $campo
+     * @param $valore
+     */
+    private function checkDatiSpesa($campo, $valore)
+    {
+        if ($campo != "flagPagamentoAnticipato") { // flagPagamentoAnticipato e' facoltativo
+
+            $this->checkRequiredField($valore, $campo);
+        }
+
+        switch ($campo) {
+
+            case 'dataEmissione':
+            case 'dataPagamento':
+                $this->checkDataEmissione($campo, $valore);
+                break;
+
+            case 'flagOperazione':
+                $this->checkFlagOperazione($valore);
+                break;
+
+            case 'cfCittadino':
+                $this->checkCfCittadino($valore);
+                break;
+
+            case 'dispositivo':
+                $this->checkDispositivo($valore);
+                break;
+
+            case 'numDocumento':
+                $this->checkNumDocumento($valore);
+                break;
+
         }
     }
 }
