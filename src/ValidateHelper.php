@@ -288,10 +288,9 @@ class ValidateHelper
         if(!is_numeric($valore)){
             return false;
         }
-        if(strlen($valore)>1 && substr($valore, 0,2)=='00'){ //'00123' passed is_numeric()!
+        if(strlen($valore)>1 && substr($valore, 0,2)=='00'){ //because '00123' passed!
             return false;
         }
-        //$valore = (int)$valore;
         if(is_numeric($maxLen) && $maxLen>0){
             $maxNumber = pow(10, $maxLen);
             return !( $valore>=$maxNumber );
