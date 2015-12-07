@@ -161,7 +161,7 @@ class ValidateHelper
     /**
      * @param $valore
      */
-    private function checkTipoSpesa($valore)
+    public function checkTipoSpesa($valore)
     {
         if (!TipoSpesa::isValidValue($valore)) {
             $this->addError("<b>" . $valore . "</b> - Codice tipo spesa (tipoSpesa) non valido. Codici validi: " . TipoSpesa::getCostantsValues());
@@ -184,7 +184,7 @@ class ValidateHelper
      */
     private function checkRequiredField($valore, $campo)
     {
-        if ($valore == "" && $campo != "flagPagamentoAnticipato") { // flagPagamentoAnticipato e' facoltativo
+        if ($valore == "") {
             $this->addError("Dato spesa mancante campo: " . $campo);
         }
     }
@@ -195,13 +195,13 @@ class ValidateHelper
      */
     private function checkDataEmissione($campo, $valore)
     {
-            $this->checkDataValida($campo, $valore);
+        $this->checkDataValida($campo, $valore);
     }
 
     /**
      * @param $valore
      */
-    private function checkFlagOperazione($valore)
+    public function checkFlagOperazione($valore)
     {
         if (!FlagOperazione::isValidValue($valore)) {
             $this->addError("<b>" . $valore . "</b> - Flag Operazione (flagOperazione) non valido. Codici validi: " . FlagOperazione::getCostantsValues());
@@ -221,9 +221,9 @@ class ValidateHelper
     /**
      * @param $valore
      */
-    private function checkDispositivo($valore)
+    public function checkDispositivo($valore)
     {
-        if (!is_numeric($valore) || strlen($valore) > 3) {
+        if (!$this->checkNumericField($valore, 3, true)) {
             $this->addError("<b>" . $valore . "</b> - Codice dispositivo (dispositivo) non valido: deve essere numerico, al massimo di 3 cifre");
         }
     }
@@ -231,9 +231,9 @@ class ValidateHelper
     /**
      * @param $valore
      */
-    private function checkNumDocumento($valore)
+    public function checkNumDocumento($valore)
     {
-        if (!is_numeric($valore) || strlen($valore) > 20) {
+        if (!$this->checkNumericField($valore, 20)) {
             $this->addError("<b>" . $valore . "</b> - Numero documento (numDocumento) non valido: deve essere numerico, al massimo di 20 cifre");
         }
     }
@@ -249,7 +249,10 @@ class ValidateHelper
 
         foreach($rigaSpesa as $campo => $valore) {
 
-            $this->checkRequiredField($valore, $campo);
+            if ($campo != "flagPagamentoAnticipato") { // flagPagamentoAnticipato e' facoltativo
+
+                $this->checkRequiredField($valore, $campo);
+            }
 
             if ($campo == "dataEmissione" || $campo == "dataPagamento") {
 
@@ -267,6 +270,33 @@ class ValidateHelper
 
                 $this->checkNumDocumento($valore);
             }
+        }
+    }
+
+    /**
+     * @param            $valore
+     * @param int        $maxLen
+     * @param bool|false $zeroFilled
+     *
+     * @return bool
+     */
+    public function checkNumericField($valore, $maxLen=0, $zeroFilled=false)
+    {
+        if($zeroFilled && $valore!=''){
+            $valore = ltrim(trim($valore), '0');
+        }
+        if(!is_numeric($valore)){
+            return false;
+        }
+        if(strlen($valore)>1 && substr($valore, 0,2)=='00'){ //'00123' passed is_numeric()!
+            return false;
+        }
+        //$valore = (int)$valore;
+        if(is_numeric($maxLen) && $maxLen>0){
+            $maxNumber = pow(10, $maxLen);
+            return !( $valore>=$maxNumber );
+        }else{
+            return true;
         }
     }
 }
