@@ -3,6 +3,7 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
+[![HHVM Status][ico-hhvm-status]][link-hhvm-status]
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
@@ -223,6 +224,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/padosoft/tessera-sanitaria.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/padosoft/tessera-sanitaria.svg?style=flat-square
 [ico-sensiolab]: https://insight.sensiolabs.com/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc/small.png
+[ico-hhvm-status]: http://hhvm.h4cc.de/badge/padosoft/tessera-sanitaria.svg?style=flat
 
 [link-packagist]: https://packagist.org/packages/padosoft/tessera-sanitaria
 [link-travis]: https://travis-ci.org/padosoft/tessera-sanitaria
@@ -230,6 +232,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-code-quality]: https://scrutinizer-ci.com/g/padosoft/tessera-sanitaria
 [link-downloads]: https://packagist.org/packages/padosoft/tessera-sanitaria
 [link-sensiolab]: https://insight.sensiolabs.com/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc
+[link-hhvm-status]: http://hhvm.h4cc.de/package/padosoft/tessera-sanitaria
 [link-author]: https://github.com/lopadova
 [link-contributors]: ../../contributors
 
