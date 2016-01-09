@@ -185,12 +185,7 @@ class Tracciato
             // Rimborso
             if ($flagOperazione == FlagOperazione::RIMBORSO) {
                 $xml .= $this->addTab(2) . '<idRimborso>' . PHP_EOL;
-                $xml .= $this->addTab(3) . '<pIva>' . $this->objCleanHelper->clean($this->pIva) . '</pIva>' . PHP_EOL;
-                $xml .= $this->addTab(3) . '<dataEmissione>' . $this->objCleanHelper->clean($rigaSpesa['dataEmissione']) . '</dataEmissione>' . PHP_EOL;
-                $xml .= $this->addTab(3) . '<numDocumentoFiscale>' . PHP_EOL;
-                $xml .= $this->addTab(4) . '<dispositivo>' . $this->objCleanHelper->clean($rigaSpesa['dispositivo']) . '</dispositivo>' . PHP_EOL;
-                $xml .= $this->addTab(4) . '<numDocumento>' . $this->objCleanHelper->clean($rigaSpesa['numDocumento']) . '</numDocumento>' . PHP_EOL;
-                $xml .= $this->addTab(3) . '</numDocumentoFiscale>' . PHP_EOL;
+                $xml .= $this->getSpesaOrRimborsoContent($rigaSpesa);
                 $xml .= $this->addTab(2) . '</idRimborso>' . PHP_EOL;
             }
 
@@ -198,12 +193,7 @@ class Tracciato
             $cfCittadinoEncrypted = $this->encrypt($rigaSpesa['cfCittadino'], 'cfCittadino');
 
             $xml .= $this->addTab(2) . '<idSpesa>' . PHP_EOL;
-            $xml .= $this->addTab(3) . '<pIva>' . $this->objCleanHelper->clean($this->pIva) . '</pIva>' . PHP_EOL;
-            $xml .= $this->addTab(3) . '<dataEmissione>' . $this->objCleanHelper->clean($rigaSpesa['dataEmissione']) . '</dataEmissione>' . PHP_EOL;
-            $xml .= $this->addTab(3) . '<numDocumentoFiscale>' . PHP_EOL;
-            $xml .= $this->addTab(4) . '<dispositivo>' . $this->objCleanHelper->clean($rigaSpesa['dispositivo']) . '</dispositivo>' . PHP_EOL;
-            $xml .= $this->addTab(4) . '<numDocumento>' . $this->objCleanHelper->clean($rigaSpesa['numDocumento']) . '</numDocumento>' . PHP_EOL;
-            $xml .= $this->addTab(3) . '</numDocumentoFiscale>' . PHP_EOL;
+            $xml .= $this->getSpesaOrRimborsoContent($rigaSpesa);
             $xml .= $this->addTab(2) . '</idSpesa>' . PHP_EOL;
 
             $xml .= $this->addTab(2) . '<dataPagamento>' . $this->objCleanHelper->clean($rigaSpesa['dataPagamento']) . '</dataPagamento>' . PHP_EOL;
@@ -247,5 +237,22 @@ class Tracciato
             $this->addArrErrors($this->objCryptoHelper->getArrErrors());
         }
         return $cfencrypted;
+    }
+
+    /**
+     * @param $rigaSpesa
+     *
+     * @return string
+     */
+    private function getSpesaOrRimborsoContent($rigaSpesa)
+    {
+        $xml = '';
+        $xml .= $this->addTab(3) . '<pIva>' . $this->objCleanHelper->clean($this->pIva) . '</pIva>' . PHP_EOL;
+        $xml .= $this->addTab(3) . '<dataEmissione>' . $this->objCleanHelper->clean($rigaSpesa['dataEmissione']) . '</dataEmissione>' . PHP_EOL;
+        $xml .= $this->addTab(3) . '<numDocumentoFiscale>' . PHP_EOL;
+        $xml .= $this->addTab(4) . '<dispositivo>' . $this->objCleanHelper->clean($rigaSpesa['dispositivo']) . '</dispositivo>' . PHP_EOL;
+        $xml .= $this->addTab(4) . '<numDocumento>' . $this->objCleanHelper->clean($rigaSpesa['numDocumento']) . '</numDocumento>' . PHP_EOL;
+        $xml .= $this->addTab(3) . '</numDocumentoFiscale>' . PHP_EOL;
+        return $xml;
     }
 }
