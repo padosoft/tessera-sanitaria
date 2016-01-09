@@ -7,141 +7,143 @@ namespace Padosoft\TesseraSanitaria;
  */
 class ValidateHelper
 {
-	use traits\Errorable;
+    use traits\Errorable;
 
-    private $objPartitaIVA = null;
-    private $objCFChecker = null;
+    private $objPartitaIVA;
+    private $objCFChecker;
 
-	/**+
-	 * ValidateHelper constructor.
-	 *
-	 * @param \fdisotto\PartitaIVA   $objPartitaIVA
-	 * @param \CodiceFiscale\Checker $objCFChecker
-	 */
-	public function __construct(\fdisotto\PartitaIVA $objPartitaIVA, \CodiceFiscale\Checker $objCFChecker)
-	{
-		$this->arrErrors = array();
-		$this->objPartitaIVA = $objPartitaIVA;
-		$this->objCFChecker = $objCFChecker;
-	}
+    /**+
+     * ValidateHelper constructor.
+     *
+     * @param \fdisotto\PartitaIVA   $objPartitaIVA
+     * @param \CodiceFiscale\Checker $objCFChecker
+     */
+    public function __construct(\fdisotto\PartitaIVA $objPartitaIVA, \CodiceFiscale\Checker $objCFChecker)
+    {
+        $this->arrErrors = array();
+        $this->objPartitaIVA = $objPartitaIVA;
+        $this->objCFChecker = $objCFChecker;
+    }
 
-	/**
-	 * @param $codiceRegione
-	 */
-	public function checkCodiceRegione($codiceRegione)
-	{
+    /**
+     * @param $codiceRegione
+     */
+    public function checkCodiceRegione($codiceRegione)
+    {
         if (!CodiceRegione::isValidValue($codiceRegione)) {
-            $this->addError("<b>".$codiceRegione."</b> - Codice regione (codiceRegione) non valido. Codici validi: ".CodiceRegione::getCostantsValues());
+            $this->addError("<b>" . $codiceRegione . "</b> - Codice regione (codiceRegione) non valido. Codici validi: " . CodiceRegione::getCostantsValues());
         }
-	}
+    }
 
-	/**
-	 * @param $codiceSSA
-	 */
-	public function checkCodiceSSA($codiceSSA)
-	{
+    /**
+     * @param $codiceSSA
+     */
+    public function checkCodiceSSA($codiceSSA)
+    {
         if (!CodiceSSA::isValidValue($codiceSSA)) {
-            $this->addError("<b>".$codiceSSA."</b> - Codice SSA (codiceSSA) non valido. Codici validi: ".CodiceSSA::getCostantsValues());
+            $this->addError("<b>" . $codiceSSA . "</b> - Codice SSA (codiceSSA) non valido. Codici validi: " . CodiceSSA::getCostantsValues());
         }
-	}
+    }
 
-	/**
-	 * @param $dateStr
-	 *
-	 * @return bool
-	 */
-	public function isoDateValidate($dateStr)
-	{
-		if (preg_match('/^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/', $dateStr) > 0){
-			return TRUE;
-		}else{
-			return FALSE;
-		}
-	}
+    /**
+     * @param $dateStr
+     *
+     * @return bool
+     */
+    public function isoDateValidate($dateStr)
+    {
+        if (preg_match('/^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/',
+                $dateStr) > 0
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	/**+
-	 * @param $arrVociSpesa
-	 */
-	public function checkArrVociSpesa($arrVociSpesa)
-	{
-	    if(empty($arrVociSpesa)){
+    /**+
+     * @param $arrVociSpesa
+     */
+    public function checkArrVociSpesa($arrVociSpesa)
+    {
+        if (empty($arrVociSpesa)) {
 
-			$this->addError("Voci spesa mancanti");
-		}else{
+            $this->addError("Voci spesa mancanti");
+        } else {
 
-			foreach ($arrVociSpesa as $rigaVociSpesa){
-				foreach ($rigaVociSpesa as $colonnaVociSpesa){
-					foreach($colonnaVociSpesa as $campo=>$valore){
+            foreach ($arrVociSpesa as $rigaVociSpesa) {
+                foreach ($rigaVociSpesa as $colonnaVociSpesa) {
+                    foreach ($colonnaVociSpesa as $campo => $valore) {
 
-                        if ($campo == "tipoSpesa"){
+                        if ($campo == "tipoSpesa") {
 
                             $this->checkTipoSpesa($valore);
-                        }elseif ($campo == "importo") {
+                        } elseif ($campo == "importo") {
 
                             $this->checkImporto($valore);
                         }
                     }
-				}
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 
-	/**
-	 * @param $arrSpesa
-	 */
-	public function checkArrSpesa($arrSpesa)
-	{
-		if(empty($arrSpesa)){
-			$this->addError("Dati spesa mancanti");
-		}else{
+    /**
+     * @param $arrSpesa
+     */
+    public function checkArrSpesa($arrSpesa)
+    {
+        if (empty($arrSpesa)) {
+            $this->addError("Dati spesa mancanti");
+        } else {
 
-			// Controllo interno array spesa
-			foreach($arrSpesa as $rigaSpesa){
+            // Controllo interno array spesa
+            foreach ($arrSpesa as $rigaSpesa) {
 
                 $this->checkRigaSpesa($rigaSpesa);
-			}
-		}
-	}
-
-	/**
-	 * @param $pIva
-	 */
-	public function checkPIva($pIva)
-	{
-		if(empty($pIva)){
-			$this->addError("Partita IVA mancante");
-		}else{
-			// Verifica formale della partita IVA
-			if(!$this->objPartitaIVA->check($pIva)){
-				$this->addError("<b>".$pIva."</b> - Partita IVA formalmente non corretta");
-			}
-		}
-	}
-
-	/**
-	 * @param $cfProprietario
-	 */
-	public function checkCfProprietario($cfProprietario)
-	{
-		if(empty($cfProprietario)){
-			$this->addError("Codice fiscale proprietario (cfProprietario) mancante");
-		}else{
-			// Verifica formale del codice fiscale
-			if (!$this->objCFChecker->isFormallyCorrect($cfProprietario)){
-				$this->addError("<b>".$cfProprietario."</b> - Codice fiscale proprietario (cfProprietario) formalmente non corretto");
-			}
-		}
-	}
-
-	/**
-	 * @param $codiceAsl
-	 */
-	public function checkCodiceAsl($codiceAsl)
-	{
-        if (!CodiceAsl::isValidValue($codiceAsl)) {
-            $this->addError("<b>".$codiceAsl."</b> - Codice ASL (codiceAsl) non valido. Codici validi: ".CodiceAsl::getCostantsValues());
+            }
         }
-	}
+    }
+
+    /**
+     * @param $pIva
+     */
+    public function checkPIva($pIva)
+    {
+        if (empty($pIva)) {
+            $this->addError("Partita IVA mancante");
+        } else {
+            // Verifica formale della partita IVA
+            if (!$this->objPartitaIVA->check($pIva)) {
+                $this->addError("<b>" . $pIva . "</b> - Partita IVA formalmente non corretta");
+            }
+        }
+    }
+
+    /**
+     * @param $cfProprietario
+     */
+    public function checkCfProprietario($cfProprietario)
+    {
+        if (empty($cfProprietario)) {
+            $this->addError("Codice fiscale proprietario (cfProprietario) mancante");
+        } else {
+            // Verifica formale del codice fiscale
+            if (!$this->objCFChecker->isFormallyCorrect($cfProprietario)) {
+                $this->addError("<b>" . $cfProprietario . "</b> - Codice fiscale proprietario (cfProprietario) formalmente non corretto");
+            }
+        }
+    }
+
+    /**
+     * @param $codiceAsl
+     */
+    public function checkCodiceAsl($codiceAsl)
+    {
+        if (!CodiceAsl::isValidValue($codiceAsl)) {
+            $this->addError("<b>" . $codiceAsl . "</b> - Codice ASL (codiceAsl) non valido. Codici validi: " . CodiceAsl::getCostantsValues());
+        }
+    }
 
     /**
      * @param $campo
@@ -245,21 +247,21 @@ class ValidateHelper
      *
      * @return bool
      */
-    public function checkNumericField($valore, $maxLen=0, $zeroFilled=false)
+    public function checkNumericField($valore, $maxLen = 0, $zeroFilled = false)
     {
-        if($zeroFilled && $valore!=''){
+        if ($zeroFilled && $valore != '') {
             $valore = ltrim(trim($valore), '0');
         }
-        if(!is_numeric($valore)){
+        if (!is_numeric($valore)) {
             return false;
         }
-        if(strlen($valore)>1 && substr($valore, 0,2)=='00'){ //because '00123' passed!
+        if (strlen($valore) > 1 && substr($valore, 0, 2) == '00') { //because '00123' passed!
             return false;
         }
-        if(is_numeric($maxLen) && $maxLen>0){
+        if (is_numeric($maxLen) && $maxLen > 0) {
             $maxNumber = pow(10, $maxLen);
-            return !( $valore>=$maxNumber );
-        }else{
+            return !($valore >= $maxNumber);
+        } else {
             return true;
         }
     }
@@ -269,16 +271,16 @@ class ValidateHelper
      */
     private function checkRigaSpesa($rigaSpesa)
     {
-        if(count($rigaSpesa)<6){
+        if (count($rigaSpesa) < 6) {
             $this->addError("Dati spesa incompleti");
         }
 
-        foreach($rigaSpesa as $campo => $valore) {
+        foreach ($rigaSpesa as $campo => $valore) {
 
             $this->checkDatiSpesa($campo, $valore);
         }
     }
-    
+
     /**
      * @param $campo
      * @param $valore

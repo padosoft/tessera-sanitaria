@@ -114,6 +114,7 @@ class ValidateHelperTest extends TestBase
             $this->objValidateHelper->resetErrors();
         }
     }
+
     /**
      * @test
      */
@@ -141,23 +142,23 @@ class ValidateHelperTest extends TestBase
     public function testIsoDateValidate()
     {
         // Correct Date:
-        $data='2015-01-05';
+        $data = '2015-01-05';
         $this->assertTrue($this->objValidateHelper->isoDateValidate($data));
 
         // Wrong Date:
-        $data='2015-15-05';
+        $data = '2015-15-05';
         $this->assertFalse($this->objValidateHelper->isoDateValidate($data));
 
-        $data='2015-11-40';
+        $data = '2015-11-40';
         $this->assertFalse($this->objValidateHelper->isoDateValidate($data));
 
-        $data='15-11-01';
+        $data = '15-11-01';
         $this->assertFalse($this->objValidateHelper->isoDateValidate($data));
 
-        $data='2015-1-01';
+        $data = '2015-1-01';
         $this->assertFalse($this->objValidateHelper->isoDateValidate($data));
 
-        $data='2015-11-1';
+        $data = '2015-11-1';
         $this->assertFalse($this->objValidateHelper->isoDateValidate($data));
     }
 
@@ -200,7 +201,8 @@ class ValidateHelperTest extends TestBase
         $this->invokeMethod($this->objValidateHelper, 'checkDataValida', array('test', '2015-11-1'));
         $this->assertTrue($this->objValidateHelper->hasErrors());
     }
- /**
+
+    /**
      * @test
      */
     public function testCheckDataEmissione()

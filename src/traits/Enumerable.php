@@ -8,14 +8,14 @@ namespace Padosoft\TesseraSanitaria\traits;
  */
 trait Enumerable
 {
-	/**
-	 * @return array
-	 */
-	public static function getCostants()
-	{
-		$oClass = new \ReflectionClass(__CLASS__);
-		return $oClass->getConstants();
-	}
+    /**
+     * @return array
+     */
+    public static function getCostants()
+    {
+        $oClass = new \ReflectionClass(__CLASS__);
+        return $oClass->getConstants();
+    }
 
     /**
      * @param $valore
@@ -32,7 +32,7 @@ trait Enumerable
      *
      * @return string
      */
-    public static function getCostantsValues($separator=', ')
+    public static function getCostantsValues($separator = ', ')
     {
         return implode($separator, self::getCostants());
     }

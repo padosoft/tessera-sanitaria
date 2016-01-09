@@ -7,72 +7,72 @@ namespace Padosoft\TesseraSanitaria;
  */
 class CryptoHelper
 {
-	use traits\Errorable;
+    use traits\Errorable;
 
-	protected $cert_file="";
-	protected $tmp_path="";
-	protected $openssl_exe_path="";
-	public $output="";
-	protected $returned_val="";
+    protected $cert_file = "";
+    protected $tmp_path = "";
+    protected $openssl_exe_path = "";
+    public $output = "";
+    protected $returned_val = "";
 
-	/**
-	 * CryptoHelper constructor.
-	 *
-	 * @param $cert_file
-	 * @param $tmp_path
-	 * @param $openssl_exe_path
-	 */
-	public function __construct($cert_file, $tmp_path, $openssl_exe_path)
-	{
-		$this->cert_file = $cert_file;
-		$this->tmp_path = $tmp_path;
-		$this->openssl_exe_path = $openssl_exe_path;
-	}
+    /**
+     * CryptoHelper constructor.
+     *
+     * @param $cert_file
+     * @param $tmp_path
+     * @param $openssl_exe_path
+     */
+    public function __construct($cert_file, $tmp_path, $openssl_exe_path)
+    {
+        $this->cert_file = $cert_file;
+        $this->tmp_path = $tmp_path;
+        $this->openssl_exe_path = $openssl_exe_path;
+    }
 
-	/**
-	 * @param $str
-	 *
-	 * @return string
-	 */
-	public function rsaEncrypt($str)
-	{
-        if(!$this->checkPath()){
+    /**
+     * @param $str
+     *
+     * @return string
+     */
+    public function rsaEncrypt($str)
+    {
+        if (!$this->checkPath()) {
             return '';
         }
-		// Path e nomi dei file temporanei
-		$rand_name = $this->getRandName();
-		$file_source = $this->tmp_path.$rand_name.".txt";
-		$file_dest = $this->tmp_path.$rand_name.".enc";
+        // Path e nomi dei file temporanei
+        $rand_name = $this->getRandName();
+        $file_source = $this->tmp_path . $rand_name . ".txt";
+        $file_dest = $this->tmp_path . $rand_name . ".enc";
 
-		// Scrive file temporaneo sorgente
-		file_put_contents($file_source, $str);
+        // Scrive file temporaneo sorgente
+        file_put_contents($file_source, $str);
 
-		// creo il comando openssl
-		$exec = $this->getCommand($file_source, $file_dest);
+        // creo il comando openssl
+        $exec = $this->getCommand($file_source, $file_dest);
 
-		// Esegue istruzione openssl, creando file temporaneo con testo criptato
+        // Esegue istruzione openssl, creando file temporaneo con testo criptato
         $this->excecuteCommand($exec);
 
-		// Ricava il testo criptato dal file appena creato
+        // Ricava il testo criptato dal file appena creato
         $encrypted_txt = $this->getEncryptedString($file_dest);
 
         //clean
         $this->deleteSourceFile($file_source);
 
         return $encrypted_txt;
-	}
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function getError()
-	{
-		$result = FALSE;
-		if($this->returned_val == 1){
-			$result = TRUE;
-		}
-		return $result;
-	}
+    /**
+     * @return bool
+     */
+    public function getError()
+    {
+        $result = false;
+        if ($this->returned_val == 1) {
+            $result = true;
+        }
+        return $result;
+    }
 
     /**
      * @return bool

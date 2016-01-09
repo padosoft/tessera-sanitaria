@@ -33,20 +33,20 @@ class ErrorableTest extends TestBase
         $this->assertFalse($this->objValidateHelper->hasErrors());
         $this->objValidateHelper->resetErrors();
 
-        $this->objValidateHelper->AddArrErrors(array('ciao','hello'));
+        $this->objValidateHelper->AddArrErrors(array('ciao', 'hello'));
         $this->assertTrue($this->objValidateHelper->hasErrors());
         $this->assertTrue(is_array($this->objValidateHelper->getArrErrors()));
-        $this->assertTrue(count($this->objValidateHelper->getArrErrors())==2);
-        $this->assertTrue($this->objValidateHelper->getArrErrors()[0]=='ciao');
-        $this->assertTrue($this->objValidateHelper->getArrErrors()[1]=='hello');
+        $this->assertTrue(count($this->objValidateHelper->getArrErrors()) == 2);
+        $this->assertTrue($this->objValidateHelper->getArrErrors()[0] == 'ciao');
+        $this->assertTrue($this->objValidateHelper->getArrErrors()[1] == 'hello');
         $this->objValidateHelper->resetErrors();
 
-        $this->objValidateHelper->AddArrErrors(array('ciao',''));
+        $this->objValidateHelper->AddArrErrors(array('ciao', ''));
         $this->assertTrue($this->objValidateHelper->hasErrors());
         $this->assertTrue(is_array($this->objValidateHelper->getArrErrors()));
-        $this->assertTrue(count($this->objValidateHelper->getArrErrors())==2);
-        $this->assertTrue($this->objValidateHelper->getArrErrors()[0]=='ciao');
-        $this->assertTrue($this->objValidateHelper->getArrErrors()[1]=='');
+        $this->assertTrue(count($this->objValidateHelper->getArrErrors()) == 2);
+        $this->assertTrue($this->objValidateHelper->getArrErrors()[0] == 'ciao');
+        $this->assertTrue($this->objValidateHelper->getArrErrors()[1] == '');
         $this->objValidateHelper->resetErrors();
     }
 
@@ -59,11 +59,11 @@ class ErrorableTest extends TestBase
         $this->objValidateHelper->addError('ciao');
         $this->assertTrue($this->objValidateHelper->hasErrors());
         $this->assertTrue(is_array($this->objValidateHelper->getArrErrors()));
-        $this->assertTrue(count($this->objValidateHelper->getArrErrors())==1);
-        $this->assertTrue($this->objValidateHelper->getArrErrors()[0]=='ciao');
+        $this->assertTrue(count($this->objValidateHelper->getArrErrors()) == 1);
+        $this->assertTrue($this->objValidateHelper->getArrErrors()[0] == 'ciao');
         $this->objValidateHelper->resetErrors();
 
-        $this->objValidateHelper->addError(array('ciao','hello'));
+        $this->objValidateHelper->addError(array('ciao', 'hello'));
         $this->assertTrue($this->objValidateHelper->hasErrors());
         $this->objValidateHelper->resetErrors();
 
