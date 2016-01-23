@@ -126,6 +126,23 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 # USO DELLA LIBRERIA
 
+## INSTALLAZIONE DEL PROGETTO
+
+Per installare il progetto con il demo, andare nella directory del proprio web server, e lanciare il comando:
+
+``` bash
+composer create-project padosoft/tessera-sanitaria --dev
+```
+
+Supponendo un installazione su windows con XAMPP:
+
+``` bash
+cd C:\xampp\htdocs
+composer create-project padosoft/tessera-sanitaria --dev
+```
+
+a questo punto è possibile visitare l'url http://localhost/tessera-sanitaria/tests/index.php e visualizzare la pagina demo.  
+
 ## ESEMPIO BASE
 
 L'utilizzo base del pacchetto, al netto del caricamento delle dipendenze, prevede l'istanza della classe per il tracciato, il passaggio dei dati necessari alla creazione dell'XML e il successivo recupero del codice in una variabile di tipo stringa:
