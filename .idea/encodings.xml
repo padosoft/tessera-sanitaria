@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/.gitattributes" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/.gitignore" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/CleanHelper.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/CodiceAsl.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/CodiceRegione.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/CodiceSSA.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/CryptoHelper.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/FlagOperazione.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/IOHelper.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/PrintHelper.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/TipoSpesa.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/Tracciato.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/ValidateHelper.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/traits/Enumerable.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/traits/Errorable.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tests/ErrorableTest.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tests/TestBase.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tests/ValidateHelperTest.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tests/index.php" charset="UTF-8" />
+    <file url="PROJECT" charset="ISO-8859-1" />
+  </component>
+</project>
