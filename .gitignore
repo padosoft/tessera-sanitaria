@@ -1,3 +1,5 @@
+#ignore phpstorm object files
+.idea
 build
 docs
 vendor

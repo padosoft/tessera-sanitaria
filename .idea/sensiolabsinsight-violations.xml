@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analysis>
-  <link href="https://insight.sensiolabs.com/api/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc/analyses/16" rel="self" type="application/vnd.com.sensiolabs.insight+xml"/>
-  <link href="https://insight.sensiolabs.com/api/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc/analyses/16/status" rel="status" type="application/vnd.com.sensiolabs.insight+xml"/>
+  <link href="https://insight.sensiolabs.com/api/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc/analyses/19" rel="self" type="application/vnd.com.sensiolabs.insight+xml"/>
+  <link href="https://insight.sensiolabs.com/api/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc/analyses/19/status" rel="status" type="application/vnd.com.sensiolabs.insight+xml"/>
   <link href="https://insight.sensiolabs.com/api/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc" rel="project" type="application/vnd.com.sensiolabs.insight+xml"/>
-  <link href="https://insight.sensiolabs.com/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc/analyses/16" rel="self" type="text/html"/>
+  <link href="https://insight.sensiolabs.com/projects/a79cb441-a1e0-43f7-a343-d1598847ccfc/analyses/19" rel="self" type="text/html"/>
   <status><![CDATA[finished]]></status>
   <grades>
     <entry><![CDATA[none]]></entry>
@@ -14,14 +14,14 @@
   </grades>
   <failed>false</failed>
   <grade><![CDATA[platinum]]></grade>
-  <begin-at><![CDATA[2016-01-10T15:20:03+0100]]></begin-at>
-  <end-at><![CDATA[2016-01-10T15:20:29+0100]]></end-at>
-  <duration>4</duration>
-  <number>16</number>
+  <begin-at><![CDATA[2016-01-25T10:00:08+0100]]></begin-at>
+  <end-at><![CDATA[2016-01-25T10:08:05+0100]]></end-at>
+  <duration>8</duration>
+  <number>19</number>
   <altered>false</altered>
   <remediation-cost>0</remediation-cost>
   <nb-violations>0</nb-violations>
-  <reference><![CDATA[6e49264b6112a668d27251e2d5632d4861030fea]]></reference>
+  <reference><![CDATA[eea799613bd475418ff349de3e4ffed07dfd3b1f]]></reference>
   <configuration>
     <ignored-branches>
       <branch><![CDATA[gh-pages]]></branch>
@@ -82,6 +82,9 @@
     <env/>
   </configuration>
   <previous-analyses-references>
+    <analysis-reference number="19">eea799613bd475418ff349de3e4ffed07dfd3b1f</analysis-reference>
+    <analysis-reference number="18">eea799613bd475418ff349de3e4ffed07dfd3b1f</analysis-reference>
+    <analysis-reference number="17">eea799613bd475418ff349de3e4ffed07dfd3b1f</analysis-reference>
     <analysis-reference number="16">6e49264b6112a668d27251e2d5632d4861030fea</analysis-reference>
     <analysis-reference number="15">6e49264b6112a668d27251e2d5632d4861030fea</analysis-reference>
     <analysis-reference number="14">0420a8f871e0bf89f45a04e75bd0c637f6f8637a</analysis-reference>
